@@ -115,7 +115,7 @@ const SignUp:FC<ISignUp> = ({setRoute}) => {
                     Уже зарегестрированны?{""}
                     <span
                         className='text-[#2190ff] pl-1 cursor-pointer'
-                        onClick={() => setRoute('Sing-Up')}
+                        onClick={() => setRoute('Login')}
                     >
                         Войти
                     </span>

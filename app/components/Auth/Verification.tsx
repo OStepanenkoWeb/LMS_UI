@@ -1,6 +1,9 @@
-import React, {FC, RefObject, useRef, useState} from 'react';
+import React, {FC, RefObject, useEffect, useRef, useState} from 'react';
 import {styles} from "@/app/styles/style";
 import {VscWorkspaceTrusted} from "react-icons/vsc";
+import {useSelector} from "react-redux";
+import {useActivationMutation} from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 interface IVerification {
     setRoute: (route: string) => void
@@ -14,6 +17,8 @@ type VerifyNumber = {
 }
 
 const Verification:FC<IVerification> = ({setRoute}) => {
+    const {token} = useSelector((state:any) => state.auth)
+    const [activation, {isSuccess, error}] =useActivationMutation()
     const [invalidError, setInvalidError] = useState<boolean>(false)
     const [verifyNumber, setVerifyNumber] = useState<VerifyNumber>({
         0: "",
@@ -21,6 +26,21 @@ const Verification:FC<IVerification> = ({setRoute}) => {
         2: "",
         3: "",
     })
+    useEffect(() => {
+        if(isSuccess){
+            toast.success('Ваш аккаунт активирован')
+            setRoute('Login')
+        }
+        if (error) {
+            if('data' in error) {
+                const errorData = error as any
+                toast.error(errorData.data.message)
+                setInvalidError(true)
+            } else {
+                console.log('An error occurred:', error)
+            }
+        }
+    }, [isSuccess, error])
 
     const inputRefs: RefObject<HTMLInputElement>[] = [
         useRef<HTMLInputElement | null>(null),
@@ -30,6 +50,18 @@ const Verification:FC<IVerification> = ({setRoute}) => {
     ]
 
     const verificationHandler = async () => {
+        console.log(verifyNumber)
+        const verificationNumber = Object.values(verifyNumber).join('')
+
+        if(verificationNumber.length !== 4) {
+            setInvalidError(true)
+            return
+        }
+        console.log(token, verificationNumber)
+        await activation({
+            activationToken: token,
+            activationCode: verificationNumber
+        })
 
     }
 

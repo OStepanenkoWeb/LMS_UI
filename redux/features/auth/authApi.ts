@@ -32,12 +32,14 @@ export const authApi = apiSlice.injectEndpoints({
             }
         }),
         activation: builder.mutation<TRegistrationResponse, TRegistrationData>({
-            query: ({activation_token, activation_code}) => ({
+            query: ({activationToken, activationCode}) => {
+                console.log(activationToken, activationCode)
+                return {
                 url: 'activate-user',
                 method: 'POST',
-                body: {activation_token, activation_code},
+                body: {activationToken, activationCode},
                 credentials: 'include' as const
-            }),
+            }},
         }),
     })
 })
