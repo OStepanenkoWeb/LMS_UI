@@ -1,16 +1,18 @@
 'use client'
 
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import * as Yup from 'yup'
 import {useFormik} from "formik";
 import {styles} from "@/app/styles/style";
 import {AiFillGithub, AiOutlineEye, AiOutlineEyeInvisible} from "react-icons/ai";
 import {FcGoogle} from "react-icons/fc";
 import Input from "@/app/components/Inputs/Input";
+import {useLoginMutation} from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 interface ILogin {
-    setRoute: (route: string) => void
-
+    setRoute: (route: string) => void,
+    setOpen: (open: boolean) => void,
 }
 
 const schema = Yup.object().shape({
@@ -18,19 +20,34 @@ const schema = Yup.object().shape({
     password: Yup.string().required("Пожалуйста укажите свой пароль").min(6)
 })
 
-const Login: FC<ILogin> = ({setRoute}) => {
+const Login: FC<ILogin> = ({setRoute, setOpen}) => {
     const [show, setShow] = useState<boolean>(false)
+    const [login, { isSuccess, data, error }] = useLoginMutation()
 
     const formik = useFormik({
         initialValues: {email: '', password: ''},
         validationSchema: schema,
         onSubmit: async ({email, password}) => {
-
+            await login({email, password})
         }
     })
 
+    useEffect(() => {
+        if(isSuccess) {
+            toast.success('Вы успешно авторизовались')
+            setOpen(false)
+        }
+
+        if (error) {
+            if('data' in error) {
+                const errorData = error as any
+                toast.error(errorData.data.message)
+            }
+        }
+
+    }, [isSuccess, error])
+
     const {errors, touched, values, handleChange, handleSubmit} = formik
-    console.log('Render Login')
 
     return (
         <div className='w-full'>
