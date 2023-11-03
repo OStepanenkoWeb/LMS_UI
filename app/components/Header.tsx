@@ -7,6 +7,9 @@ import CustomModal from "@/app/utils/CustomModal";
 import Login from "@/app/components/Auth/Login";
 import SignUp from "@/app/components/Auth/SignUp";
 import Verification from "@/app/components/Auth/Verification";
+import {useSelector} from "react-redux";
+import Image from "next/image";
+import avatar from '../../public/avatars/avatar.png'
 
 interface IHeaderProps {
     open: boolean
@@ -18,7 +21,8 @@ interface IHeaderProps {
 
 const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) => {
     const [active, setActive] = useState(false)
-    const [opnSidebar, setOpenSidebar] = useState(false)
+    const [openSidebar, setOpenSidebar] = useState(false)
+    const {user} = useSelector((state: any) => state.auth)
 
     if (typeof window !== 'undefined') {
         window.addEventListener('scroll', () => {
@@ -40,6 +44,7 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
     }
 
     let component = mapComponent[route || 'Login']
+    console.log(user, user.avatar, avatar)
 
     return (<div className='w-full relative'>
             <div
@@ -70,16 +75,27 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
                                         onClick={() => setOpenSidebar(true)}
                                     />
                                 </div>
-                                <HiOutlineUserCircle
-                                    size={25}
-                                    className='hidden 800px:block cursor-pointer dark:text-white text-black'
-                                    onClick={() => setOpen(true)}
-                                />
+                                {
+                                    user ? (
+                                        <Image
+                                            src={user.avatar || avatar}
+                                            alt=''
+                                            className='w-[30px] h-[30px] rounded-full'
+                                        />
+                                    ) : (
+                                        <HiOutlineUserCircle
+                                            size={25}
+                                            className='hidden 800px:block cursor-pointer dark:text-white text-black'
+                                            onClick={() => setOpen(true)}
+                                        />
+                                    )
+                                }
+
                             </div>
                         </div>
                     </div>
                     {/* mobile sidebar*/}
-                    {opnSidebar && (<div
+                    {openSidebar && (<div
                             className="fixed w-full h-screen top-0 left-0 z-[99999] dark:bg-[unset] bg-[#00000024]"
                             onClick={handleClose}
                             id='screen'
