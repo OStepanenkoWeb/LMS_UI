@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Link from "next/link";
 import NavItems from "@/app/utils/NavItems";
 import ThemeSwitcher from "@/app/utils/ThemeSwitcher";
@@ -10,6 +10,11 @@ import Verification from "@/app/components/Auth/Verification";
 import {useSelector} from "react-redux";
 import Image from "next/image";
 import avatar from '../../public/avatars/avatar.png'
+import {useSession} from "next-auth/react";
+import {useLogOutQuery, useSocialAuthMutation} from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
+import {GetStaticUrl} from "@/app/utils/GetStaticPath";
 
 interface IHeaderProps {
     open: boolean
@@ -23,6 +28,45 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
     const [active, setActive] = useState(false)
     const [openSidebar, setOpenSidebar] = useState(false)
     const {user} = useSelector((state: any) => state.auth)
+    const {data} = useSession()
+    const [socialAuth, {error, isSuccess}] = useSocialAuthMutation()
+    const [logout, setLogout] = useState(false)
+
+    const {} = useLoadUserQuery(undefined, {
+        skip: !user.auth && !isSuccess
+    })
+    const {} = useLogOutQuery(undefined, {
+        skip: !logout,
+    })
+
+    useEffect(() => {
+        if(!user) {
+           if(data) {
+               socialAuth({
+                       email: data?.user?.email,
+                       name: data?.user?.name,
+                       avatar: data?.user?.image,
+                   })
+           }
+        }
+
+
+        if(isSuccess) {
+            toast.success('Вы успешно авторизовались')
+        }
+
+        if(!data && user === null) {
+            setLogout(true)
+        }
+
+        if (error) {
+            if('data' in error) {
+                const errorData = error as any
+                toast.error(errorData.data.message)
+            }
+        }
+
+    }, [data, user, error])
 
     if (typeof window !== 'undefined') {
         window.addEventListener('scroll', () => {
@@ -44,7 +88,6 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
     }
 
     let component = mapComponent[route || 'Login']
-    console.log(user, user.avatar, avatar)
 
     return (<div className='w-full relative'>
             <div
@@ -77,11 +120,15 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
                                 </div>
                                 {
                                     user ? (
-                                        <Image
-                                            src={user.avatar || avatar}
-                                            alt=''
-                                            className='w-[30px] h-[30px] rounded-full'
-                                        />
+                                        <Link href={'/profile'}>
+                                            <Image
+                                                src={GetStaticUrl(user.avatar || avatar)}
+                                                alt=''
+                                                className='w-[30px] h-[30px] rounded-full cursor-pointer'
+                                                width={30} height={30}
+                                                style={{border: activeItem === 5 ? '2px solid #37a39a' : 'none'}}
+                                            />
+                                        </Link>
                                     ) : (
                                         <HiOutlineUserCircle
                                             size={25}

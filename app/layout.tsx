@@ -6,6 +6,11 @@ import { ThemeProvider} from "@/app/utils/ThemeProvider";
 import './globals.css'
 import {Toaster} from "react-hot-toast";
 import {Providers} from "@/app/Provider";
+import {SessionProvider} from "next-auth/react";
+import React from "react";
+import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
+import Loader from "@/app/components/Loader/Loader";
+import {useSelector} from "react-redux";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -19,6 +24,21 @@ const josefin = Josefin_Sans({
   variable: '--font-Josefin'
 })
 
+const Custom: React.FC<{children: React.ReactNode}> = ({children}) => {
+    const {user} = useSelector((state: any) => state.auth)
+    const {isLoading} = useLoadUserQuery(undefined, {
+        skip: !user.auth
+    })
+
+    return (
+        <div>
+            {
+                isLoading ? <Loader/> : <div>{children}</div>
+            }
+        </div>
+    )
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -28,10 +48,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} ${josefin.variable} !bg-white bg-no-repeat dark:bg-gradient-to-b dark:from-gray-900 dark:to-black duration-300`}>
         <Providers>
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-                {children}
-                <Toaster position='top-center' reverseOrder={false}/>
-            </ThemeProvider>
+            <SessionProvider>
+                <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+                    <Custom>
+                        {children}
+                    </Custom>
+                    <Toaster position='top-center' reverseOrder={false}/>
+                </ThemeProvider>
+            </SessionProvider>
         </Providers>
       </body>
     </html>

@@ -10,7 +10,7 @@ interface IProps {
 
 const Page: FC<IProps> = () => {
     const [open, setOpen] = useState(false)
-    const [activeItem, setActiveItem] = useState(0)
+    const [activeItem, setActiveItem] = useState(5)
     const [route, setRoute] = useState("Login")
 
     return (
