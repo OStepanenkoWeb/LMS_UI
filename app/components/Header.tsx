@@ -11,8 +11,10 @@ import {useSelector} from "react-redux";
 import Image from "next/image";
 import avatar from '../../public/avatars/avatar.png'
 import {useSession} from "next-auth/react";
-import {useSocialAuthMutation} from "@/redux/features/auth/authApi";
+import {useLogOutQuery, useSocialAuthMutation} from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
+import {GetStaticUrl} from "@/app/utils/GetStaticPath";
 
 interface IHeaderProps {
     open: boolean
@@ -28,6 +30,14 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
     const {user} = useSelector((state: any) => state.auth)
     const {data} = useSession()
     const [socialAuth, {error, isSuccess}] = useSocialAuthMutation()
+    const [logout, setLogout] = useState(false)
+
+    const {} = useLoadUserQuery(undefined, {
+        skip: !user.auth && !isSuccess
+    })
+    const {} = useLogOutQuery(undefined, {
+        skip: !logout,
+    })
 
     useEffect(() => {
         if(!user) {
@@ -42,6 +52,11 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
 
         if(isSuccess) {
             toast.success('Вы успешно авторизовались')
+        }
+
+
+        if(!data && user === null) {
+            setLogout(true)
         }
 
         if (error) {
@@ -73,7 +88,6 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
     }
 
     let component = mapComponent[route || 'Login']
-    console.log(user, user.avatar, avatar)
 
     return (<div className='w-full relative'>
             <div
@@ -108,10 +122,11 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
                                     user ? (
                                         <Link href={'/profile'}>
                                             <Image
-                                                src={user.avatar || avatar}
+                                                src={GetStaticUrl(user.avatar || avatar)}
                                                 alt=''
                                                 className='w-[30px] h-[30px] rounded-full cursor-pointer'
                                                 width={30} height={30}
+                                                style={{border: activeItem === 5 ? '2px solid #37a39a' : 'none'}}
                                             />
                                         </Link>
                                     ) : (

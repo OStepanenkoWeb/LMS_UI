@@ -50,14 +50,13 @@ const Verification:FC<IVerification> = ({setRoute}) => {
     ]
 
     const verificationHandler = async () => {
-        console.log(verifyNumber)
         const verificationNumber = Object.values(verifyNumber).join('')
 
         if(verificationNumber.length !== 4) {
             setInvalidError(true)
             return
         }
-        console.log(token, verificationNumber)
+
         await activation({
             activationToken: token,
             activationCode: verificationNumber

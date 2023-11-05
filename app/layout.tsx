@@ -7,6 +7,10 @@ import './globals.css'
 import {Toaster} from "react-hot-toast";
 import {Providers} from "@/app/Provider";
 import {SessionProvider} from "next-auth/react";
+import React from "react";
+import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
+import Loader from "@/app/components/Loader/Loader";
+import {useSelector} from "react-redux";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -20,6 +24,21 @@ const josefin = Josefin_Sans({
   variable: '--font-Josefin'
 })
 
+const Custom: React.FC<{children: React.ReactNode}> = ({children}) => {
+    const {user} = useSelector((state: any) => state.auth)
+    const {isLoading} = useLoadUserQuery(undefined, {
+        skip: !user.auth
+    })
+
+    return (
+        <div>
+            {
+                isLoading ? <Loader/> : <div>{children}</div>
+            }
+        </div>
+    )
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -31,7 +50,9 @@ export default function RootLayout({
         <Providers>
             <SessionProvider>
                 <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-                    {children}
+                    <Custom>
+                        {children}
+                    </Custom>
                     <Toaster position='top-center' reverseOrder={false}/>
                 </ThemeProvider>
             </SessionProvider>

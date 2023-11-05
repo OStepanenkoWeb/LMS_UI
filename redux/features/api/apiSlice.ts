@@ -8,14 +8,14 @@ export const apiSlice = createApi({
     }),
     endpoints: (builder) => ({
         refreshToken: builder.query({
-            query: (data) => ({
+            query: () => ({
                 url:'refresh-token',
                 method: 'GET',
                 credentials: 'include' as const
             })
         }),
         loadUser: builder.query({
-            query: (data) => ({
+            query: () => ({
                 url:'me',
                 method: 'GET',
                 credentials: 'include' as const
@@ -29,7 +29,7 @@ export const apiSlice = createApi({
                     }))
 
                 } catch (error: any) {
-                    console.log('Query "login" with error', error)
+                    console.log('Query "loadUser" with error', error)
                 }
             }
         }),
