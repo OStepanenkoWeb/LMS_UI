@@ -50,10 +50,10 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
            }
         }
 
-
         if(isSuccess) {
             toast.success('Вы успешно авторизовались')
         }
+
 
         if(!data && user === null) {
             setLogout(true)

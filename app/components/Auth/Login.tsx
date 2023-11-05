@@ -9,6 +9,7 @@ import {FcGoogle} from "react-icons/fc";
 import Input from "@/app/components/Inputs/Input";
 import {useLoginMutation} from "@/redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import {signIn} from "next-auth/react";
 
 interface ILogin {
     setRoute: (route: string) => void,
@@ -92,10 +93,12 @@ const Login: FC<ILogin> = ({setRoute, setOpen}) => {
                     <FcGoogle
                         size={30}
                         className='cursor-pointer mr-2'
+                        onClick={() => signIn('google')}
                     />
                     <AiFillGithub
                         size={30}
                         className='cursor-pointer ml-2'
+                        onClick={() => signIn('github')}
                     />
                 </div>
                 <h5 className='text-center pt-4 fontPoppins text-[14px]'>
