@@ -6,6 +6,8 @@ import {RiLockPasswordLine} from "react-icons/ri";
 import {SiCoursera} from "react-icons/si";
 import {AiOutlineLogout} from "react-icons/ai";
 import {GetStaticUrl} from "@/app/utils/GetStaticPath";
+import {MdOutlineAdminPanelSettings} from "react-icons/md";
+import Link from "next/link";
 
 interface ISidebarProfile {
     user: IUser
@@ -36,7 +38,7 @@ const SidebarProfile:FC<ISidebarProfile> = ({user, active, setActive,logOutHandl
             }`}
                  onClick={() => setActive(2)}
             >
-                <RiLockPasswordLine size={20} fill='#fff'/>
+                <RiLockPasswordLine size={20} className="dark:text-white text-black"/>
                 <h5 className='pl-2 800px:block hidden font-Poppins dark:text-white text-black'>
                     Сменить пароль
                 </h5>
@@ -46,17 +48,33 @@ const SidebarProfile:FC<ISidebarProfile> = ({user, active, setActive,logOutHandl
             }`}
                  onClick={() => setActive(3)}
             >
-                <SiCoursera size={20} fill='#fff'/>
+                <SiCoursera size={20} className="dark:text-white text-black"/>
                 <h5 className='pl-2 800px:block hidden font-Poppins dark:text-white text-black'>
                     Мои курсы
                 </h5>
             </div>
+            {
+                user.role === 'admin' && (
+                    <Link
+                        href={'/admin'}
+                        className={`w-full flex items center px-3 py-4 cursor-pointer ${
+                        active ===5 ? 'dark:bg-slate-800 bg-white' : 'bg-transparent'
+                    }`}
+                         onClick={() => setActive(5)}
+                    >
+                        <MdOutlineAdminPanelSettings size={20} className="dark:text-white text-black"/>
+                        <h5 className='pl-2 800px:block hidden font-Poppins dark:text-white text-black'>
+                            Панель администратора
+                        </h5>
+                    </Link>
+                )
+            }
             <div className={`w-full flex items center px-3 py-4 cursor-pointer ${
                 active ===4 ? 'dark:bg-slate-800 bg-white' : 'bg-transparent'
             }`}
                  onClick={() => logOutHandler()}
             >
-                <AiOutlineLogout size={20} fill='#fff'/>
+                <AiOutlineLogout size={20} className="dark:text-white text-black"/>
                 <h5 className='pl-2 800px:block hidden font-Poppins dark:text-white text-black'>
                     Выйти
                 </h5>

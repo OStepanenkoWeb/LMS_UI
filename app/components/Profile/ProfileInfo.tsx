@@ -3,10 +3,11 @@ import Image from "next/image";
 import {IUser} from "@/app/interfaces/IUser";
 import avatarDefault from '../../../public/avatars/avatar.png'
 import {AiOutlineCamera} from "react-icons/ai";
-import {useUpdateAvatarMutation} from "@/redux/features/user/userApi";
+import {useUpdateAvatarMutation, useUpdateProfileMutation} from "@/redux/features/user/userApi";
 import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
 import {styles} from "@/app/styles/style";
 import {GetStaticUrl} from "@/app/utils/GetStaticPath";
+import toast from "react-hot-toast";
 
 interface IProfileInfo {
     user: IUser
@@ -15,21 +16,29 @@ interface IProfileInfo {
 const ProfileInfo:FC<IProfileInfo> = ({user}) => {
     const [name, setName] =  useState(user?.name || 'Инкогнито')
     const [loadUser, setLoadUser] =  useState(false)
-    const [updateAvatar, {isSuccess , error}] = useUpdateAvatarMutation()
+    const [updateAvatar, {isSuccess: isSuccessUpdateAvatar , error: errorUpdateAvatar}] = useUpdateAvatarMutation()
+    const [updateProfile, {isSuccess: isSuccessUpdateProfile , error: errorUpdateProfile}] = useUpdateProfileMutation()
     const {} = useLoadUserQuery(undefined, {
         skip: !loadUser
     })
 
     useEffect(() => {
-        if(isSuccess) {
+        if(isSuccessUpdateAvatar || isSuccessUpdateProfile) {
             setLoadUser(true)
         }
 
-        if(error) {
-
+        if (isSuccessUpdateProfile) {
+            toast.success('Имя вашего профиля успешно обновлено')
         }
 
-    }, [isSuccess, error])
+        if(errorUpdateAvatar || errorUpdateProfile) {
+            if('data' in errorUpdateAvatar || 'data' in errorUpdateProfile) {
+                const errorData = errorUpdateAvatar as any || errorUpdateProfile as any
+                toast.error(errorData.data.message)
+            }
+        }
+
+    }, [isSuccessUpdateAvatar, errorUpdateAvatar, errorUpdateProfile, isSuccessUpdateProfile])
 
     const imageHandler = async (event: any) => {
 
@@ -39,7 +48,18 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
         updateAvatar(formData)
     }
 
-    const handleSubmit = async (event: any) => {}
+    const handleSubmit = async (event: any) => {
+        event.preventDefault()
+
+        if(name !== '') {
+            await updateProfile({
+                name: name
+            })
+        } else {
+            toast.error('Имя не может быть пустым')
+        }
+
+    }
 
 
     return (
@@ -80,7 +100,7 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
                             <input
                                 name="name"
                                 type="text"
-                                className={`${styles.input} !w-[95%] mb-4 800px:mb-0`}
+                                className={`${styles.input} !w-[95%] mb-4 800px:mb-0 dark:text-white text-black `}
                                 required
                                 value={name}
                                 onChange={(e) => {setName(e.target.value)}}
@@ -93,7 +113,7 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
                             <input
                                 type="text"
                                 readOnly
-                                className={`${styles.input} !w-[95%] mb-1 800px:mb-0`}
+                                className={`${styles.input} !w-[95%] mb-1 800px:mb-0 dark:text-white text-black`}
                                 required
                                 value={user?.email}
                             />
