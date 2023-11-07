@@ -5,7 +5,7 @@ interface ICustomModal {
     open: boolean
     setOpen: (open: boolean) => void
     activeItem: any
-    component: React.FunctionComponent
+    component?: any
     setRoute?: (route: string) => void
 }
 

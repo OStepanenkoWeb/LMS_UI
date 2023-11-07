@@ -6,15 +6,16 @@ import {IconType} from "react-icons/lib";
 
 interface IInput {
     id: string
-    errors?: object
-    values?: object
-    touched?: object
+    errors?: any
+    values?: any
+    touched?: any
     label?: string
     type?: string
     placeholder?: string
-    handleChange?: () => void
+    handleChange?: (event:React.ChangeEvent<any>) => void
     handleIcon?: () => void
     icon?: IconType
+    className?: any
 }
 
 const Input: FC<IInput> = ({

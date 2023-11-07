@@ -18,8 +18,8 @@ const Page:FC = () => {
                 <Heading
                     title={`LMS ${user?.name} кабинет пользователя`}
                     description="Обучающая платформа для преподавателей и слушателей"
-                    keywords="Разработка, программирование, обучение, LMS">
-                </Heading>
+                    keywords="Разработка, программирование, обучение, LMS"
+                />
                 <Header
                     open={open}
                     setOpen={setOpen}

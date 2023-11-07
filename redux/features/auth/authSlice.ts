@@ -5,22 +5,27 @@ type TState = {
     user: string
 }
 
+type TLogin = {
+    accessToken: string
+    user: string
+}
+
 
 const initialState:TState = {
     token: '',
     user: ''
 }
 
-const userRegistrationReducer: CaseReducer<TState, PayloadAction<string>> = (state, action) => {
+const userRegistrationReducer: CaseReducer<TState, PayloadAction< {token: string}>> = (state, action) => {
     state.token = action.payload.token
 }
 
-const userLoggedInReducer: CaseReducer<TState, PayloadAction<string>> = (state, action) => {
+const userLoggedInReducer: CaseReducer<TState, PayloadAction<TLogin>> = (state, action) => {
     state.token = action.payload.accessToken
     state.user = action.payload.user
 }
 
-const userMeReducer: CaseReducer<TState, PayloadAction<string>> = (state, action) => {
+const userMeReducer: CaseReducer<TState, PayloadAction<{ user: any }>> = (state, action) => {
     state.user = action.payload.user
 }
 

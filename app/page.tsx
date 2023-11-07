@@ -2,7 +2,7 @@
 
 import {FC, useState} from "react";
 import Heading from "@/app/utils/Heading";
-import Header from "./components/Header.tsx"
+import Header from "./components/Header"
 import Hero from "@/app/components/Route/Hero";
 
 interface IProps {
@@ -18,8 +18,8 @@ const Page: FC<IProps> = () => {
             <Heading
                 title="LMS"
                 description="Обучающая платформа для преподавателей и слушателей"
-                keywords="Разработка, программирование, обучение, LMS">
-            </Heading>
+                keywords="Разработка, программирование, обучение, LMS"
+            />
             <Header
                 open={open}
                 setOpen={setOpen}

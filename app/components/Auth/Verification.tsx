@@ -93,7 +93,7 @@ const Verification:FC<IVerification> = ({setRoute}) => {
             <br/>
             <div className='m-auto flex items-center justify-around'>
                 {
-                    Object.keys(verifyNumber).map((key, index) => (
+                    Object.keys(verifyNumber).map((key:any, index) => (
                         <input
                             type="number"
                             key={key}

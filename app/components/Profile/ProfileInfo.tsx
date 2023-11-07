@@ -32,7 +32,7 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
         }
 
         if(errorUpdateAvatar || errorUpdateProfile) {
-            if('data' in errorUpdateAvatar || 'data' in errorUpdateProfile) {
+            if((errorUpdateAvatar && 'data' in errorUpdateAvatar) || (errorUpdateProfile && 'data' in errorUpdateProfile)) {
                 const errorData = errorUpdateAvatar as any || errorUpdateProfile as any
                 toast.error(errorData.data.message)
             }
@@ -67,7 +67,7 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
             <div className="w-full flex justify-center">
                 <div className="relative">
                     <Image
-                        src={GetStaticUrl(user?.avatar || avatarDefault)}
+                        src={GetStaticUrl(user?.avatar as string || avatarDefault)}
                         alt=""
                         width={120}
                         height={120}

@@ -1,6 +1,6 @@
 'use client'
 
-import React, {FC, useEffect, useState} from 'react';
+import React, {ChangeEvent, ChangeEventHandler, FC, useEffect, useState} from 'react';
 import * as Yup from 'yup'
 import {useFormik} from "formik";
 import {styles} from "@/app/styles/style";
@@ -50,6 +50,10 @@ const Login: FC<ILogin> = ({setRoute, setOpen}) => {
 
     const {errors, touched, values, handleChange, handleSubmit} = formik
 
+    const handleChangeInput = (event:React.ChangeEvent<any>) => {
+        handleChange(event)
+    }
+
     return (
         <div className='w-full'>
             <h1 className={`${styles.title}`}>
@@ -64,7 +68,7 @@ const Login: FC<ILogin> = ({setRoute, setOpen}) => {
                     placeholder='loginmail@mail.ru'
                     label='Введите свой email'
                     type='email'
-                    handleChange={handleChange}
+                    handleChange={handleChangeInput}
                 />
                 <Input
                     id='password'

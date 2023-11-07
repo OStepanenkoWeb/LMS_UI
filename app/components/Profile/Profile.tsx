@@ -53,7 +53,7 @@ const Profile:FC<IProfile> = ({user}) => {
             {
                 active === 2 && (
                     <div className='w-full h-full bg-transparent mt-[80px]'>
-                        <ChangePassword user={user}/>
+                        <ChangePassword/>
                     </div>
                 )
             }

@@ -5,14 +5,12 @@ import {userLoggedIn, userLoggedOut, userMe, userRegistration} from "@/redux/fea
 type TRegistrationResponse = {
     message: string
     activationToken: string
-}
-
-type TRegistrationData = {
+    user?: string
 }
 
 export const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        register: builder.mutation<TRegistrationResponse, TRegistrationData>({
+        register: builder.mutation<TRegistrationResponse, any>({
             query: (data) => ({
                 url: 'registration',
                 method: 'POST',
@@ -31,7 +29,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        activation: builder.mutation<TRegistrationResponse, TRegistrationData>({
+        activation: builder.mutation<TRegistrationResponse, any>({
             query: ({activationToken, activationCode}) => {
                 return {
                 url: 'activate-user',
@@ -40,7 +38,7 @@ export const authApi = apiSlice.injectEndpoints({
                 credentials: 'include' as const
             }},
         }),
-        login: builder.mutation<TRegistrationResponse, TRegistrationData>({
+        login: builder.mutation<TRegistrationResponse, any>({
             query: ({email, password}) => {
                 return {
                     url: 'login',
@@ -60,28 +58,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        socialAuth: builder.mutation<TRegistrationResponse, TRegistrationData>({
-            query: ({email, name, avatar}) => {
-                return {
-                    url: 'social-auth',
-                    method: 'POST',
-                    body: {email, name, avatar},
-                    credentials: 'include' as const
-                }},
-            async onQueryStarted(arg, {queryFulfilled, dispatch}) {
-                try {
-                    const result = await queryFulfilled
-                    userLoggedIn({
-                        accessToken: result.data.activationToken,
-                        user: result.data.user,
-                    })
-
-                } catch (error: any) {
-                    console.log('Query "social-auth" with error', error)
-                }
-            }
-        }),
-        logOut: builder.query<TRegistrationResponse, TRegistrationData>({
+        logOut: builder.query<TRegistrationResponse, any>({
             query: () => {
                 return {
                     url: 'logout',
@@ -98,7 +75,7 @@ export const authApi = apiSlice.injectEndpoints({
                 }
             }
         }),
-        socialAuth: builder.mutation<TRegistrationResponse, TRegistrationData>({
+        socialAuth: builder.mutation<TRegistrationResponse, any>({
             query: ({email, name, avatar}) => {
                 return {
                     url: 'social-auth',

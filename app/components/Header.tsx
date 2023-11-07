@@ -81,13 +81,13 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
         }
     }
 
-    const mapComponent = {
-        'Login': Login,
-        'SignUp': SignUp,
-        'Verification': Verification
-    }
+    const mapComponent= new Map([
+        ['Login', Login],
+        ['SignUp', SignUp],
+        ['Verification', Verification]
+    ])
 
-    let component = mapComponent[route || 'Login']
+    let component = mapComponent.get(route || 'Login')
 
     return (<div className='w-full relative'>
             <div
