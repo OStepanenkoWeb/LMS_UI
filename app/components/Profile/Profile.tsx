@@ -6,6 +6,7 @@ import {IUser} from "@/app/interfaces/IUser";
 import {useLogOutQuery} from "@/redux/features/auth/authApi";
 import {signOut} from "next-auth/react";
 import ProfileInfo from "@/app/components/Profile/ProfileInfo";
+import ChangePassword from "@/app/components/Profile/ChangePassword";
 
 interface IProfile {
     user: IUser
@@ -46,6 +47,13 @@ const Profile:FC<IProfile> = ({user}) => {
                 active === 1 && (
                     <div className='w-full h-full bg-transparent mt-[80px]'>
                         <ProfileInfo user={user}/>
+                    </div>
+                )
+            }
+            {
+                active === 2 && (
+                    <div className='w-full h-full bg-transparent mt-[80px]'>
+                        <ChangePassword user={user}/>
                     </div>
                 )
             }

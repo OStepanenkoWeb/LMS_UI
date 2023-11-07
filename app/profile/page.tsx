@@ -16,7 +16,7 @@ const Page:FC = () => {
         <div>
             <Protected>
                 <Heading
-                    title={`LMS ${user?.name}`}
+                    title={`LMS ${user?.name} кабинет пользователя`}
                     description="Обучающая платформа для преподавателей и слушателей"
                     keywords="Разработка, программирование, обучение, LMS">
                 </Heading>
