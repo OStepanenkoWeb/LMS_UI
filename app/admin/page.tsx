@@ -4,6 +4,7 @@ import React, {FC} from 'react';
 import Heading from "@/app/utils/Heading";
 import AdminSidebar from "@/app/components/Admin/Sidebar/AdminSidebar";
 import AdminProtected from "@/app/hooks/useAdminProtected";
+import DashboardHero from "@/app/components/Admin/DashboardHero";
 
 const Page:FC = () => {
     return (
@@ -19,7 +20,7 @@ const Page:FC = () => {
                         <AdminSidebar/>
                     </div>
                     <div className='w-[85%]'>
-
+                        <DashboardHero/>
                     </div>
                 </div>
 
