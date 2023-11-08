@@ -6,7 +6,6 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.NEXT_PUBLIC_BASE_URL
     }),
-    credentials: "include",
     endpoints: (builder) => ({
         refreshToken: builder.query({
             query: () => ({
