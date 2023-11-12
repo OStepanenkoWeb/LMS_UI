@@ -8,6 +8,7 @@ import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
 import {styles} from "@/app/styles/style";
 import {GetStaticUrl} from "@/app/utils/GetStaticPath";
 import toast from "react-hot-toast";
+import {uploadAvatar} from "@/app/utils/Supabase";
 
 interface IProfileInfo {
     user: IUser
@@ -23,7 +24,7 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
     })
 
     useEffect(() => {
-        if(isSuccessUpdateAvatar || isSuccessUpdateProfile) {
+        if(isSuccessUpdateProfile) {
             setLoadUser(true)
         }
 
@@ -40,12 +41,13 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
 
     }, [isSuccessUpdateAvatar, errorUpdateAvatar, errorUpdateProfile, isSuccessUpdateProfile])
 
+
+
     const imageHandler = async (event: any) => {
 
-        const formData = new FormData()
-        formData.append("image", event.target.files[0])
+       const avatar = await uploadAvatar(event.target.files[0])
 
-        updateAvatar(formData)
+        updateAvatar({avatar: avatar})
     }
 
     const handleSubmit = async (event: any) => {
