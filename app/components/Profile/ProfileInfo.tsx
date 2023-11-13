@@ -69,7 +69,7 @@ const ProfileInfo:FC<IProfileInfo> = ({user}) => {
             <div className="w-full flex justify-center">
                 <div className="relative">
                     <Image
-                        src={GetStaticUrl(user?.avatar as string || avatarDefault)}
+                        src={GetStaticUrl(user?.avatar as string)}
                         alt=""
                         width={120}
                         height={120}
