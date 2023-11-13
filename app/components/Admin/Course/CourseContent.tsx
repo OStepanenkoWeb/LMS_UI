@@ -1,8 +1,10 @@
 import { styles } from '@/app/styles/style';
 import React, { FC, useState } from 'react';
-import { AiOutlineDelete } from 'react-icons/ai';
+import {AiOutlineDelete, AiOutlineLink, AiOutlinePlusCircle} from 'react-icons/ai';
 import { BiSolidPencil } from 'react-icons/bi';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import {MdAddCircle, MdOutlineDelete, MdOutlineKeyboardArrowDown} from 'react-icons/md';
+import toast from "react-hot-toast";
+import {BsArrowLeftShort, BsArrowRightShort} from "react-icons/bs";
 
 type Props = {
     active: number;
@@ -34,6 +36,89 @@ const CourseContent: FC<Props> = ({
         updatedIsCollapsed[index] = !updatedIsCollapsed[index];
         setIsCollapsed(updatedIsCollapsed);
     };
+
+    const handleRemoveLink = (index: number, linkIndex: number) => {
+        if (linkIndex > 0) {
+            const updatedData = [...courseContentData];
+            updatedData[index].links.splice(linkIndex, 1);
+            setCourseContentData(updatedData);
+        }
+    };
+
+    const handleAddLink = (index: number) => {
+        const updatedData = [...courseContentData];
+        updatedData[index].links.push({ title: "", url: "" });
+        setCourseContentData(updatedData);
+    };
+
+    const newContentHandler = (item: any) => {
+        if (
+            item.title === "" ||
+            item.description === "" ||
+            item.videoUrl === "" ||
+            item.links[0].title === "" ||
+            item.links[0].url === ""
+        ) {
+            toast.error("Пожалуйста, заполните полностью предыдущий урок!");
+        } else {
+            let newVideoSection = "";
+            if (courseContentData.length > 0) {
+                const lastVideoSection =
+                    courseContentData[courseContentData.length - 1].videoSection;
+                // use the last videoSection if available, else user user input
+                if (lastVideoSection) {
+                    newVideoSection = lastVideoSection;
+                }
+            }
+            const newContent = {
+                videoUrl: "",
+                title: "",
+                description: "",
+                videoSection: newVideoSection,
+                links: [{ title: "", url: "" }],
+            };
+            setCourseContentData([...courseContentData, newContent]);
+        }
+    }
+
+    const addNewSection = () => {
+        const prevContentDataIndex = courseContentData.length - 1
+        if (
+            courseContentData[prevContentDataIndex].title === "" ||
+            courseContentData[prevContentDataIndex].description === "" ||
+            courseContentData[prevContentDataIndex].videoUrl === "" ||
+            courseContentData[prevContentDataIndex].links[0].title === "" ||
+            courseContentData[prevContentDataIndex].links[0].url === ""
+        ) {
+            toast.error("Please fill all the fields first!");
+        } else {
+            setActiveSection(activeSection + 1);
+            const newContent = {
+                videoUrl: "",
+                title: "",
+                description: "",
+                videoSection: `Untitled Section ${activeSection}`,
+                links: [{ title: "", url: "" }],
+            };
+            setCourseContentData([...courseContentData, newContent]);
+        }
+    }
+
+    const handelOptions = ()=>{
+        const prevContentDataIndex = courseContentData.length - 1
+
+        if(courseContentData[prevContentDataIndex].title === "" ||
+            courseContentData[prevContentDataIndex].description === "" ||
+            courseContentData[prevContentDataIndex].videoUrl === "" ||
+            courseContentData[prevContentDataIndex].links[0].title === "" ||
+            courseContentData[prevContentDataIndex].links[0].url === ""){
+            toast.error("Please fill all the fields first alt all sections!");
+        }else{
+            setActive(active + 1);
+            handleCourseSubmit()
+        }
+    }
+
     return (
         <div className='w-[80%] m-auto mt-24 p-3'>
             <form onSubmit={handleSubmit}>
@@ -133,7 +218,7 @@ const CourseContent: FC<Props> = ({
                                     <>
                                         <div className='my-3'>
                                             <label
-                                                className={`${styles.label}`}
+                                                className={styles.label}
                                             >
                                                 Заголовок видео
                                             </label>
@@ -154,13 +239,145 @@ const CourseContent: FC<Props> = ({
                                                 }}
                                             />
                                         </div>
+                                        <div className="my-3">
+                                            <label className={styles.label}>
+                                                Ссылка на видео
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`${styles.input} py-2 flex-grow`}
+                                                placeholder="Укажите ссылку на ваше видео"
+                                                value={item.videoUrl}
+                                                onChange={(e) => {
+                                                    const updatedData = [...courseContentData];
+                                                    updatedData[index].videoUrl =
+                                                        e.target.value;
+                                                    setCourseContentData(updatedData);
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="my-3">
+                                            <label className={styles.label}>
+                                                Описание к видео
+                                            </label>
+                                            <textarea
+                                                rows={8}
+                                                cols={30}
+                                                className={`${styles.input} py-2 !h-min`}
+                                                placeholder="Добавьте описание к вашему видео"
+                                                value={item.description}
+                                                onChange={(e) => {
+                                                    const updatedData = [...courseContentData];
+                                                    updatedData[index].description =
+                                                        e.target.value;
+                                                    setCourseContentData(updatedData);
+                                                }}></textarea>
+                                        </div>
+                                        <br />
+                                        {item?.links.map((link: any, linkIndex: number) => (
+                                            <div className="mb-3 block" key={linkIndex}>
+                                                <div className="w-full items-center flex justify-between">
+                                                    <label className={styles.label}>
+                                                        Вспомогательные материалы {linkIndex + 1}
+                                                    </label>
+                                                    <AiOutlineDelete
+                                                        className={`dark:text-white text-[20px] mr-2 text-black ${
+                                                            index > 0
+                                                                ? 'cursor-pointer'
+                                                                : 'cursor-no-drop'
+                                                        }`}
+                                                        onClick={() => linkIndex === 0
+                                                            ? null
+                                                            : handleRemoveLink(index, linkIndex)}
+                                                    />
+                                                </div>
+                                                <div className="my-3">
+                                                    <input
+                                                        type="text"
+                                                        className={`${styles.input} my-2 flex-grow`}
+                                                        placeholder="Укажите описание для ссылки на материал"
+                                                        value={link.title}
+                                                        onChange={(e) => {
+                                                            const updatedData = [...courseContentData];
+                                                            updatedData[index].links[
+                                                                linkIndex
+                                                                ].title = e.target.value;
+                                                            setCourseContentData(updatedData);
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div className="my-3">
+                                                    <input
+                                                        type="text"
+                                                        className={`${styles.input} my-2 flex-grow`}
+                                                        placeholder="Укажите ссылку на материал"
+                                                        value={link.url}
+                                                        onChange={(e) => {
+                                                            const updatedData = [...courseContentData];
+                                                            updatedData[index].links[
+                                                                linkIndex
+                                                                ].url = e.target.value;
+                                                            setCourseContentData(updatedData);
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <button
+                                            className="text-black dark:text-white flex gap-2 items-center mt-3"
+                                            onClick={() => handleAddLink(index)}
+                                        >
+                                            <AiOutlineLink className='dark:text-white text-[20px] mr-2 text-black cursor-pointer'/>
+                                            <span>Добавить ссылку</span>
+                                        </button>
                                     </>
+                                )}
+                                {index === courseContentData.length - 1 && (
+                                    <button
+                                        className="dark:text-white text-black flex gap-2 items-center mt-4 duration-300 cursor-pointer"
+                                        onClick={() => newContentHandler(item)}>
+                                        <AiOutlinePlusCircle
+                                            className="dark:text-white text-black duration-300"
+                                        />
+
+                                        <span>
+                                            Добавить новый контент
+                                        </span>
+                                    </button>
                                 )}
                             </div>
                         </>
                     );
                 })}
+                <br/>
+                <button
+                    className="flex items-center justify-center text-[20px] cursor-pointer dark:text-white text-black"
+                    onClick={addNewSection}
+                >
+                    <AiOutlinePlusCircle className="mr-2" />
+                    <span>Добавить новый урок</span>
+                </button>
             </form>
+            <div className="flex justify-between">
+                <div
+                    className='w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center dark:text-white text-black rounded mt-8 cursor-pointer'
+                    onClick={() =>  setActive(active - 1)}
+                >
+                    <span>
+                        <BsArrowLeftShort size={30}/>
+                    </span>
+                    Назад
+                </div>
+                <div
+                    className='w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center dark:text-white text-black rounded mt-8 cursor-pointer'
+                    onClick={handelOptions}
+                >
+                    Далее
+                    <span>
+                        <BsArrowRightShort size={30}/>
+                    </span>
+                </div>
+            </div>
         </div>
     );
 };

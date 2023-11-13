@@ -24,7 +24,7 @@ const SidebarProfile:FC<ISidebarProfile> = ({user, active, setActive,logOutHandl
                  onClick={() => setActive(1)}
             >
                 <Image
-                    src={GetStaticUrl(user.avatar || avatarDefault)}
+                    src={GetStaticUrl(user?.avatar as string)}
                     alt=''
                     className={'w-[20px] h-[20px] 800px:w-[30px] 800px:h-[30px] cursor-pointer rounded-full'}
                     width={30} height={30}

@@ -37,7 +37,7 @@ const CreateCourse = () => {
             videoUrl: '',
             title: '',
             description: '',
-            videoSection: 'Безымянный раздел',
+            videoSection: 'Урок',
             links: [
                 {
                     title: '',

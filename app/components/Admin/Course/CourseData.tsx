@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
+import {BsArrowLeftShort, BsArrowRightShort} from "react-icons/bs";
 
 type ICourseData = {
     benefits: { title: string }[];
@@ -76,7 +77,7 @@ const CourseData: FC<ICourseData> = ({
         <div className='w-[80%] m-auto mt-24 block'>
             <div>
                 <label className={`${styles.label} text-[20px]`}>
-                    What are the benefits for students taking this course?
+                    Какие преимущества для слушателей, проходящих этот курс?
                 </label>
                 <br />
                 {benefits.map((benefit: any, index: number) => (
@@ -114,7 +115,7 @@ const CourseData: FC<ICourseData> = ({
 
             <div>
                 <label className={`${styles.label} text-[20px]`}>
-                    What are the prerequisites for students taking this course?
+                    Какие знания/навыки должны быть у слушателей перед прохождением курса?
                 </label>
                 <br />
                 {prerequisites.map((prerequisite: any, index: number) => (
@@ -151,6 +152,9 @@ const CourseData: FC<ICourseData> = ({
                     className='w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center dark:text-white text-black rounded mt-8 cursor-pointer'
                     onClick={() => prevButton()}
                 >
+                    <span>
+                        <BsArrowLeftShort size={30}/>
+                    </span>
                     Назад
                 </div>
                 <div
@@ -158,6 +162,9 @@ const CourseData: FC<ICourseData> = ({
                     onClick={() => handleOptions()}
                 >
                     Далее
+                    <span>
+                        <BsArrowRightShort size={30}/>
+                    </span>
                 </div>
             </div>
         </div>

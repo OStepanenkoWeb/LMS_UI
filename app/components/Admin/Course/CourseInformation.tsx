@@ -2,6 +2,7 @@ import { styles } from '@/app/styles/style';
 import React, { FC, useState } from 'react';
 import Image from "next/image"
 import {GetStaticUrl} from "@/app/utils/GetStaticPath";
+import {uploadAvatar} from "../../../utils/Supabase";
 
 type ICourseInformation = {
     courseInfo: any;
@@ -23,17 +24,11 @@ const CourseInformation: FC<ICourseInformation> = ({
         setActive(active + 1);
     };
 
-    const handleChange = (e: any) => {
-        //TODO - edit upload
+    const handleChange = async (e: any) => {
         const file = e.target.files?.[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                if (reader.readyState === 2) {
-                    setCourseInfo({ ...courseInfo, thumbnail: reader.result });
-                }
-            };
-            reader.readAsDataURL(file);
+            const thumbnail = await uploadAvatar(file)
+            setCourseInfo({...courseInfo, thumbnail});
         }
     };
 
@@ -47,19 +42,15 @@ const CourseInformation: FC<ICourseInformation> = ({
         setDragging(false);
     };
 
-    const handleDrop = (e: any) => {
+    const handleDrop = async (e: any) => {
         e.preventDefault();
         setDragging(false);
         const file = e.dataTransfer.files?.[0];
 
         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                if (reader.readyState === 2) {
-                    setCourseInfo({ ...courseInfo, thumbnail: reader.result });
-                }
-            };
-            reader.readAsDataURL(file);
+            const thumbnail = await uploadAvatar(file)
+
+            setCourseInfo({...courseInfo, thumbnail})
         }
     };
     return (
@@ -81,7 +72,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                             })
                         }
                         id='name'
-                        placeholder='MERN стэк LMS платформы на nextjs 13'
+                        placeholder='Введите название вашего курса'
                         className={`${styles.input}`}
                     />
                 </div>
@@ -236,8 +227,10 @@ const CourseInformation: FC<ICourseInformation> = ({
                     >
                         {courseInfo.thumbnail ? (
                             <Image
-                                src={GetStaticUrl(courseInfo.thumbnail)}
+                                src={GetStaticUrl(courseInfo.thumbnail as string)}
                                 alt=''
+                                width={100}
+                                height={100}
                                 className='w-full max-h-full object-cover'
                             />
                         ) : (
