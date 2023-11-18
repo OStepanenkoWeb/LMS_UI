@@ -53,6 +53,16 @@ const CourseInformation: FC<ICourseInformation> = ({
             setCourseInfo({...courseInfo, thumbnail})
         }
     };
+
+    const updateCourseInfo = (key:string, value:any):void => {
+        console.log(key, value)
+        setCourseInfo({
+            ...courseInfo,
+            [key]: value,
+        })
+        console.log(courseInfo)
+    }
+
     return (
         <div className='w-[80%] m-auto my-24'>
             <form onSubmit={handleSubmit}>
@@ -65,12 +75,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                         name=''
                         required
                         value={courseInfo.name}
-                        onChange={(e: any) =>
-                            setCourseInfo({
-                                ...courseInfo,
-                                name: e.target.value,
-                            })
-                        }
+                        onChange={(e: any) => updateCourseInfo('name', e.target.value)}
                         id='name'
                         placeholder='Введите название вашего курса'
                         className={`${styles.input}`}
@@ -86,12 +91,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                         rows={8}
                         value={courseInfo.description}
                         placeholder='Добавьте короткое описание вашего курса...'
-                        onChange={(e: any) =>
-                            setCourseInfo({
-                                ...courseInfo,
-                                description: e.target.value,
-                            })
-                        }
+                        onChange={(e: any) =>updateCourseInfo('description', e.target.value)}
                         className={`${styles.input} !h-min !py-2`}
                     />
                 </div>
@@ -106,12 +106,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                             name=''
                             required
                             value={courseInfo.price}
-                            onChange={(e: any) =>
-                                setCourseInfo({
-                                    ...courseInfo,
-                                    price: e.target.value,
-                                })
-                            }
+                            onChange={(e: any) =>updateCourseInfo('price', e.target.value)}
                             id='price'
                             placeholder='29'
                             className={`${styles.input}`}
@@ -126,12 +121,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                             name=''
                             required
                             value={courseInfo.estimatedPrice}
-                            onChange={(e: any) =>
-                                setCourseInfo({
-                                    ...courseInfo,
-                                    estimatedPrice: e.target.value,
-                                })
-                            }
+                            onChange={(e: any) =>updateCourseInfo('estimatedPrice', e.target.value)}
                             id='price'
                             placeholder='79'
                             className={`${styles.input}`}
@@ -150,12 +140,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                         name=''
                         required
                         value={courseInfo.tags}
-                        onChange={(e: any) =>
-                            setCourseInfo({
-                                ...courseInfo,
-                                tags: e.target.value,
-                            })
-                        }
+                        onChange={(e: any) =>updateCourseInfo('tags', e.target.value)}
                         id='tags'
                         placeholder='react, nextjs, typescript, javascript'
                         className={`${styles.input}`}
@@ -172,12 +157,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                             name=''
                             required
                             value={courseInfo.level}
-                            onChange={(e: any) =>
-                                setCourseInfo({
-                                    ...courseInfo,
-                                    level: e.target.value,
-                                })
-                            }
+                            onChange={(e: any) =>updateCourseInfo('level', e.target.value)}
                             id='level'
                             placeholder='Начинающий/Средний/Продвинутый'
                             className={`${styles.input}`}
@@ -195,12 +175,7 @@ const CourseInformation: FC<ICourseInformation> = ({
                             name=''
                             required
                             value={courseInfo.demoUrl}
-                            onChange={(e: any) =>
-                                setCourseInfo({
-                                    ...courseInfo,
-                                    demoUrl: e.target.value,
-                                })
-                            }
+                            onChange={(e: any) =>updateCourseInfo('demoUrl', e.target.value)}
                             id='demoUrl'
                             placeholder='eer74fd'
                             className={`${styles.input}`}

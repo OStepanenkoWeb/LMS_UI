@@ -4,6 +4,7 @@ import CourseInformation from './CourseInformation';
 import CourseOptions from './CourseOptions';
 import CourseData from './CourseData';
 import CourseContent from './CourseContent';
+import CoursePreview from "@/app/components/Admin/Course/CoursePreview";
 
 type Props = {};
 
@@ -49,7 +50,52 @@ const CreateCourse = () => {
     ]);
     const [courseData, setCourseData] = useState({});
 
-    const handleSubmit = async () => {};
+    const handleSubmit = () => {
+        const benefitsFormatted = benefits.map(benefit => {
+            return {
+                title: benefit.title
+            }
+        })
+        // courseContent formatted
+        // requirements formatted
+        const requirementsFormatted = prerequisites.map((requirement) => ({title: requirement.title}))
+        // courseContent formatted
+        const courseContentFormatted = courseContentData.map(content => {
+            return {
+                title: content.title,
+                videoUrl: content.videoUrl,
+                description: content.description,
+                videoSection: content.videoSection,
+                links: content.links.map(link => {
+                    return {
+                        title: link.title,
+                        url: link.url
+                    }
+                }),
+                suggestions: content.suggestion
+            }
+        })
+        // prepare course data object
+        const courseData = {
+            name: courseInfo.name,
+            description: courseInfo.description,
+            price: courseInfo.price,
+            estimatedPrice: courseInfo.estimatedPrice,
+            tags: courseInfo.tags.split(","),
+            level: courseInfo.level,
+            thumbnail: courseInfo.thumbnail,
+            demoUrl: courseInfo.demoUrl,
+            benefits: benefitsFormatted,
+            requirements: requirementsFormatted,
+            courseContent: courseContentFormatted
+        }
+        setCourseData(courseData)
+        console.log(courseData);
+    };
+    const handelCourseCreation = async() => {
+        console.log(courseData);
+
+    }
     return (
         <div className='w-full flex min-h-screen'>
             <div className='w-[80%]'>
@@ -78,6 +124,14 @@ const CreateCourse = () => {
                         courseContentData={courseContentData}
                         setCourseContentData={setCourseContentData}
                         handleSubmit={handleSubmit}
+                    />
+                )}
+                {active === 3 && (
+                    <CoursePreview
+                        active={active}
+                        setActive={setActive}
+                        courseData={courseData}
+                        handelCourseCreation={handelCourseCreation}
                     />
                 )}
             </div>

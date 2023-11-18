@@ -27,9 +27,23 @@ const CourseContent: FC<Props> = ({
 
     const [activeSection, setActiveSection] = useState(1);
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-    };
+    const newContent = {
+        videoUrl: "",
+        title: "",
+        description: "",
+        videoSection: `Безымянный урок ${activeSection}`,
+        links: [{ title: "", url: "" }],
+    }
+
+    const prevContentDataIndex = courseContentData.length - 1
+
+    const ifEmptyField =  courseContentData[prevContentDataIndex].title === "" ||
+        courseContentData[prevContentDataIndex].description === "" ||
+        courseContentData[prevContentDataIndex].videoUrl === "" ||
+        courseContentData[prevContentDataIndex].links[0].title === "" ||
+        courseContentData[prevContentDataIndex].links[0].url === ""
+
+
 
     const handleCollapseToggle = (index: number) => {
         const updatedIsCollapsed = [...isCollapsed];
@@ -70,58 +84,34 @@ const CourseContent: FC<Props> = ({
                     newVideoSection = lastVideoSection;
                 }
             }
-            const newContent = {
-                videoUrl: "",
-                title: "",
-                description: "",
-                videoSection: newVideoSection,
-                links: [{ title: "", url: "" }],
-            };
+
             setCourseContentData([...courseContentData, newContent]);
         }
     }
 
     const addNewSection = () => {
-        const prevContentDataIndex = courseContentData.length - 1
-        if (
-            courseContentData[prevContentDataIndex].title === "" ||
-            courseContentData[prevContentDataIndex].description === "" ||
-            courseContentData[prevContentDataIndex].videoUrl === "" ||
-            courseContentData[prevContentDataIndex].links[0].title === "" ||
-            courseContentData[prevContentDataIndex].links[0].url === ""
-        ) {
-            toast.error("Please fill all the fields first!");
+        if (ifEmptyField) {
+            toast.error("Пожалуйста, заполните все поля предыдущего урока!");
         } else {
             setActiveSection(activeSection + 1);
-            const newContent = {
-                videoUrl: "",
-                title: "",
-                description: "",
-                videoSection: `Untitled Section ${activeSection}`,
-                links: [{ title: "", url: "" }],
-            };
+
             setCourseContentData([...courseContentData, newContent]);
         }
     }
 
     const handelOptions = ()=>{
-        const prevContentDataIndex = courseContentData.length - 1
-
-        if(courseContentData[prevContentDataIndex].title === "" ||
-            courseContentData[prevContentDataIndex].description === "" ||
-            courseContentData[prevContentDataIndex].videoUrl === "" ||
-            courseContentData[prevContentDataIndex].links[0].title === "" ||
-            courseContentData[prevContentDataIndex].links[0].url === ""){
-            toast.error("Please fill all the fields first alt all sections!");
+        if(ifEmptyField){
+            toast.error("Пожалуйста, заполните все поля в предыдущих разделах!");
         }else{
-            setActive(active + 1);
+            setActive(active + 1)
+
             handleCourseSubmit()
         }
     }
 
     return (
         <div className='w-[80%] m-auto mt-24 p-3'>
-            <form onSubmit={handleSubmit}>
+            <form>
                 {courseContentData?.map((item: any, index: number) => {
                     const showSectionInput =
                         index === 0 ||
