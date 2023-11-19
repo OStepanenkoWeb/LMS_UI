@@ -16,7 +16,7 @@ type ICoursePreview = {
 }
 
 const CoursePreview:FC<ICoursePreview> = ({courseData, handelCourseCreation,active, setActive, isEdit}) => {
-    const discountPercentage = ((courseData?.estimatedPrice - courseData?.price) / courseData?.estimatedPrice)
+    const discountPercentage = ((courseData?.estimatedPrice - courseData?.price) / courseData?.estimatedPrice)* 100
     const discountPercentagePrice = discountPercentage.toFixed(0)
     const prevButton = () => setActive(active - 1)
     const createCourse = () => handelCourseCreation()
@@ -73,13 +73,14 @@ const CoursePreview:FC<ICoursePreview> = ({courseData, handelCourseCreation,acti
                     <div className='flex items-center justify-between pt-3'>
                         <div className='flex items-center'>
                             <Ratings rating={0}/>
-                            <h5>0 Изучающих</h5>
+                            <h5>0 Оценок</h5>
                         </div>
+                        <h5>0 Изучающих</h5>
                         <br/>
-                        <h1 className='text-[25px] font-Poppins font-[600]'>
-                            Почему вы хотите изучить этот курс?
-                        </h1>
                     </div>
+                    <h1 className='text-[25px] font-Poppins font-[600]'>
+                        Почему вы хотите изучить этот курс?
+                    </h1>
                     {
                         courseData?.benefits?.map((item:any, index:number) => (
                             <div className='w-full flex 800px:items-center py-2' key={index}>

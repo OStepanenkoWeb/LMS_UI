@@ -1,10 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import CourseInformation from './CourseInformation';
 import CourseOptions from './CourseOptions';
 import CourseData from './CourseData';
 import CourseContent from './CourseContent';
 import CoursePreview from "@/app/components/Admin/Course/CoursePreview";
+import {useCreateCourseMutation} from "@/redux/features/courses/coursesApi";
+import toast from "react-hot-toast";
+import {redirect} from "next/navigation";
 
 type Props = {};
 
@@ -20,6 +23,7 @@ interface IInfoCourse {
 }
 
 const CreateCourse = () => {
+    const [createCourse, {isLoading, isSuccess, error}] = useCreateCourseMutation()
     const [active, setActive] = useState(0);
     const [courseInfo, setCourseInfo] = useState<IInfoCourse>({
         name: '',
@@ -49,6 +53,20 @@ const CreateCourse = () => {
         },
     ]);
     const [courseData, setCourseData] = useState({});
+
+    useEffect(() => {
+        if(isSuccess) {
+            toast.success('Курс успешно создан!')
+            redirect('admin/all-courses')
+        }
+
+        if(error) {
+            if('data' in error) {
+                const errorData = error as any
+                toast.error(errorData.data.message)
+            }
+        }
+    }, [isSuccess, error])
 
     const handleSubmit = () => {
         const benefitsFormatted = benefits.map(benefit => {
@@ -86,6 +104,7 @@ const CreateCourse = () => {
             thumbnail: courseInfo.thumbnail,
             demoUrl: courseInfo.demoUrl,
             benefits: benefitsFormatted,
+            prerequisites,
             requirements: requirementsFormatted,
             courseContent: courseContentFormatted
         }
@@ -95,6 +114,9 @@ const CreateCourse = () => {
     const handelCourseCreation = async() => {
         console.log(courseData);
 
+        if(!isLoading) {
+            await createCourse({data: courseData})
+        }
     }
     return (
         <div className='w-full flex min-h-screen'>
