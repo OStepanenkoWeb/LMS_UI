@@ -146,7 +146,7 @@ const AdminSidebar:FC = () => {
                                     sx={{ m: '10px 0 0 0' }}
                                     className='!text-[20px] text-black dark:text-white capitalize'
                                 >
-                                    -{user?.role}
+                                    {user?.role}
                                 </Typography>
                             </Box>
                         </Box>
@@ -204,7 +204,7 @@ const AdminSidebar:FC = () => {
                         />
                         <ItemAdminSidebar
                             title='Опубликованные курсы'
-                            to='/admin/content/live-courses'
+                            to='/admin/courses'
                             icon={<OndemandVideoIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -256,7 +256,7 @@ const AdminSidebar:FC = () => {
                         </MenuItem>
                         <ItemAdminSidebar
                             title='Управление командой'
-                            to='/admin/controllers/manage-team'
+                            to='/admin/team'
                             icon={<ManageHistoryIcon />}
                             selected={selected}
                             setSelected={setSelected}
