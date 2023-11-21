@@ -6,7 +6,7 @@ interface ICoursePlayer {
 }
 
 const CoursePlayer:FC<ICoursePlayer> = ({ videoUrl, title}) => {
-    console.log('CoursePlayer', videoUrl) // https://www.youtube.com/embed/Big_aFLmekI
+    // https://www.youtube.com/embed/Big_aFLmekI
     return (
         <div style={{paddingTop: '41%', position: 'relative'}}>
             <iframe

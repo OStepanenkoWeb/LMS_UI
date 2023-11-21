@@ -2,7 +2,7 @@ import { styles } from '@/app/styles/style';
 import React, { FC, useState } from 'react';
 import {AiOutlineDelete, AiOutlineLink, AiOutlinePlusCircle} from 'react-icons/ai';
 import { BiSolidPencil } from 'react-icons/bi';
-import {MdAddCircle, MdOutlineDelete, MdOutlineKeyboardArrowDown} from 'react-icons/md';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import toast from "react-hot-toast";
 import {BsArrowLeftShort, BsArrowRightShort} from "react-icons/bs";
 
@@ -37,11 +37,12 @@ const CourseContent: FC<Props> = ({
 
     const prevContentDataIndex = courseContentData.length - 1
 
-    const ifEmptyField =  courseContentData[prevContentDataIndex].title === "" ||
+    const ifEmptyField =  courseContentData[prevContentDataIndex] && (
+        courseContentData[prevContentDataIndex].title === "" ||
         courseContentData[prevContentDataIndex].description === "" ||
         courseContentData[prevContentDataIndex].videoUrl === "" ||
-        courseContentData[prevContentDataIndex].links[0].title === "" ||
-        courseContentData[prevContentDataIndex].links[0].url === ""
+        courseContentData[prevContentDataIndex]?.links[0]?.title === "" ||
+        courseContentData[prevContentDataIndex]?.links[0]?.url === "")
 
 
 

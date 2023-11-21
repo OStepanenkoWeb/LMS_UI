@@ -9,8 +9,6 @@ import {useCreateCourseMutation} from "@/redux/features/courses/coursesApi";
 import toast from "react-hot-toast";
 import {redirect} from "next/navigation";
 
-type Props = {};
-
 interface IInfoCourse {
     name: string,
     description: string,
@@ -57,7 +55,7 @@ const CreateCourse = () => {
     useEffect(() => {
         if(isSuccess) {
             toast.success('Курс успешно создан!')
-            redirect('admin/all-courses')
+            redirect('courses')
         }
 
         if(error) {
@@ -109,11 +107,8 @@ const CreateCourse = () => {
             courseContent: courseContentFormatted
         }
         setCourseData(courseData)
-        console.log(courseData);
     };
     const handelCourseCreation = async() => {
-        console.log(courseData);
-
         if(!isLoading) {
             await createCourse({data: courseData})
         }
