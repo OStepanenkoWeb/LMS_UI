@@ -93,7 +93,8 @@ const AdminSidebar:FC = () => {
                                 ml='15px'
                             >
                                 <Link
-                                    href='/'
+                                    href={'/'}
+                                    passHref
                                     className='text-[25px] uppercase dark:text-white text-black'
                                 >
                                     LMS
@@ -216,13 +217,13 @@ const AdminSidebar:FC = () => {
                         <MenuItem>
                             {!isCollapsed && (
                                 <Typography className='!text-[18px] !font-poppins'>
-                                    Oсновное
+                                    Управление контентом
                                 </Typography>
                             )}
                         </MenuItem>
                         <ItemAdminSidebar
                             title='Заглавная страница'
-                            to='/admin/customization/hero'
+                            to='/admin/hero'
                             icon={<WebIcon />}
                             selected={selected}
                             setSelected={setSelected}
