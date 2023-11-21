@@ -2,7 +2,7 @@ import { styles } from '@/app/styles/style';
 import React, { FC, useState } from 'react';
 import Image from "next/image"
 import {GetStaticUrl} from "@/app/utils/GetStaticPath";
-import {uploadAvatar} from "../../../utils/Supabase";
+import {uploadAvatar} from "@/app/utils/Supabase";
 
 type ICourseInformation = {
     courseInfo: any;
@@ -55,12 +55,10 @@ const CourseInformation: FC<ICourseInformation> = ({
     };
 
     const updateCourseInfo = (key:string, value:any):void => {
-        console.log(key, value)
         setCourseInfo({
             ...courseInfo,
             [key]: value,
         })
-        console.log(courseInfo)
     }
 
     return (

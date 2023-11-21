@@ -21,7 +21,6 @@ const Profile:FC<IProfile> = ({user}) => {
     })
 
     const logOutHandler = async () => {
-        console.log('logOutHandler')
         setLogout(true)
         await signOut()
     }
