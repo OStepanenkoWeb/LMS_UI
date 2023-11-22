@@ -17,6 +17,7 @@ interface IInfoCourse {
     tags: string,
     level: string,
     demoUrl: string,
+    categories: string,
     thumbnail: string,
 }
 
@@ -30,6 +31,7 @@ const CreateCourse = () => {
         estimatedPrice: '',
         tags: '',
         level: '',
+        categories: '',
         demoUrl: '',
         thumbnail: '',
     });
@@ -41,6 +43,7 @@ const CreateCourse = () => {
             title: '',
             description: '',
             videoSection: 'Урок',
+            videoLength: '',
             links: [
                 {
                     title: '',
@@ -81,6 +84,7 @@ const CreateCourse = () => {
                 title: content.title,
                 videoUrl: content.videoUrl,
                 description: content.description,
+                videoLength: content.videoLength,
                 videoSection: content.videoSection,
                 links: content.links.map(link => {
                     return {

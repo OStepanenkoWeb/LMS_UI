@@ -231,7 +231,7 @@ const AdminSidebar:FC = () => {
                         />
                         <ItemAdminSidebar
                             title='FAQ'
-                            to='/admin/customization/faq'
+                            to='/admin/faq'
                             icon={<QuizIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -239,7 +239,7 @@ const AdminSidebar:FC = () => {
                         />
                         <ItemAdminSidebar
                             title='Категории'
-                            to='/admin/customization/categories'
+                            to='/admin/categories'
                             icon={<GroupsIcon />}
                             selected={selected}
                             setSelected={setSelected}
