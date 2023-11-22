@@ -249,6 +249,23 @@ const CourseContent: FC<Props> = ({
                                         </div>
                                         <div className="my-3">
                                             <label className={styles.label}>
+                                                Продолжительность видео
+                                            </label>
+                                            <input
+                                                type="text"
+                                                className={`${styles.input} py-2 flex-grow`}
+                                                placeholder="Укажите продолжительность вашего видео"
+                                                value={String(item.videoLength)}
+                                                onChange={(e) => {
+                                                    const updatedData = [...courseContentData];
+                                                    updatedData[index].videoLength =
+                                                        Number(e.target.value);
+                                                    setCourseContentData(updatedData);
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="my-3">
+                                            <label className={styles.label}>
                                                 Описание к видео
                                             </label>
                                             <textarea

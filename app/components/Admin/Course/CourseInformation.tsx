@@ -1,8 +1,9 @@
 import { styles } from '@/app/styles/style';
-import React, { FC, useState } from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Image from "next/image"
 import {GetStaticUrl} from "@/app/utils/GetStaticPath";
 import {uploadAvatar} from "@/app/utils/Supabase";
+import {useGetHeroDataQuery} from "@/redux/features/layout/layoutApi";
 
 type ICourseInformation = {
     courseInfo: any;
@@ -17,7 +18,16 @@ const CourseInformation: FC<ICourseInformation> = ({
                                           active,
                                           setActive,
                                       }) => {
+    const { data } = useGetHeroDataQuery("Categories", {})
     const [dragging, setDragging] = useState(false);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        if (data) {
+            setCategories(data.layout.categories);
+            setCourseInfo({...courseInfo, categories: data.layout.categories})
+        }
+    }, [data]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -127,22 +137,48 @@ const CourseInformation: FC<ICourseInformation> = ({
                     </div>
                 </div>
                 <br />
-                <div>
-                    {/* email */}
-                    <label className={`${styles.label}`} htmlFor='tags'>
-                        {' '}
-                        Тэги
-                    </label>
-                    <input
-                        type='text'
-                        name=''
-                        required
-                        value={courseInfo.tags}
-                        onChange={(e: any) =>updateCourseInfo('tags', e.target.value)}
-                        id='tags'
-                        placeholder='react, nextjs, typescript, javascript'
-                        className={`${styles.input}`}
-                    />
+                <div className='w-full flex justify-between'>
+                    <div className='w-[45%]'>
+                        <label className={`${styles.label}`} htmlFor='tags'>
+                            {' '}
+                            Тэги
+                        </label>
+                        <input
+                            type='text'
+                            name=''
+                            required
+                            value={courseInfo.tags}
+                            onChange={(e: any) =>updateCourseInfo('tags', e.target.value)}
+                            id='tags'
+                            placeholder='react, nextjs, typescript, javascript'
+                            className={`${styles.input}`}
+                        />
+                    </div>
+                    <div className='w-[50%]'>
+                        <label
+                            htmlFor='demoUrl'
+                            className={`${styles.label} w-[50%]`}
+                        >
+                            Категория курса
+                        </label>
+                        <select
+                            name=""
+                            id=""
+                            className={`${styles.select}`}
+                            value={courseInfo.categories}
+                            onChange={(e: any) =>
+                                setCourseInfo({ ...courseInfo, categories: e.target.value })
+                            }
+                        >
+                            <option value="">Выберите категорию</option>
+                            {categories &&
+                                categories.map((item: any) => (
+                                    <option value={item.title} key={item._id}>
+                                        {item.title}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
                 </div>
                 <br />
                 <div className='w-full flex justify-between'>
