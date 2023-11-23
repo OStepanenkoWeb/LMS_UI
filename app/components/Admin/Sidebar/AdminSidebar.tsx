@@ -156,7 +156,7 @@ const AdminSidebar:FC = () => {
                     <Box>
                         <ItemAdminSidebar
                             title='Панель администратора'
-                            to='/admin/dashboard'
+                            to='/admin'
                             icon={<HomeOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -180,7 +180,7 @@ const AdminSidebar:FC = () => {
                         />
                         <ItemAdminSidebar
                             title='Заявки'
-                            to='/admin/data/invoices'
+                            to='/admin/invoices'
                             icon={<ReceiptOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -275,7 +275,7 @@ const AdminSidebar:FC = () => {
                         </MenuItem>
                         <ItemAdminSidebar
                             title='Аналитика курсов'
-                            to='/admin/analytics/course-analytics'
+                            to='/admin/courses-analytics'
                             icon={<BarChartOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -283,7 +283,7 @@ const AdminSidebar:FC = () => {
                         />
                         <ItemAdminSidebar
                             title='Аналитика заказов'
-                            to='/admin/analytics/orders-analytics'
+                            to='/admin/orders-analytics'
                             icon={<MapOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}
@@ -291,7 +291,7 @@ const AdminSidebar:FC = () => {
                         />
                         <ItemAdminSidebar
                             title='Аналитика пользователей'
-                            to='/admin/analytics/users-analytics'
+                            to='/admin/users-analytics'
                             icon={<TrendingUpOutlinedIcon />}
                             selected={selected}
                             setSelected={setSelected}

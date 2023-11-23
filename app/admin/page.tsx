@@ -20,7 +20,7 @@ const Page:FC = () => {
                         <AdminSidebar/>
                     </div>
                     <div className='w-[85%]'>
-                        <DashboardHero/>
+                        <DashboardHero isDashboard={true}/>
                     </div>
                 </div>
 
