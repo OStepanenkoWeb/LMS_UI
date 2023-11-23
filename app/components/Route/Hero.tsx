@@ -5,7 +5,7 @@ import { BiSearch } from 'react-icons/bi';
 import {useGetHeroDataQuery} from "@/redux/features/layout/layoutApi";
 
 const Hero:FC = () => {
-    const { data, refetch } = useGetHeroDataQuery("Banner", {refetchOnMountOrArgChange: true,});
+    const { data } = useGetHeroDataQuery("Banner", {refetchOnMountOrArgChange: true,});
     const title = data?.layout?.banner.title
     const subTitle = data?.layout?.banner.subTitle
     const image = data?.layout?.banner.image
@@ -49,7 +49,7 @@ const Hero:FC = () => {
                         <Image src={require("../../../public/avatars/client-3.jpg")} alt="" width={100} height={100} className='rounded-full border-[3px]'/>
                     </div>
 
-                    <p className='font-Josefin dark:text-[#edfff4] text-[#000000b3] 1000px:pl-3 text-[18px] font-[600] flex items-center ml-[10px]'>
+                    <p className='font-Montserrat dark:text-[#edfff4] text-[#000000b3] 1000px:pl-3 text-[18px] font-[600] flex items-center ml-[10px]'>
                         Нам уже доверяют более 500 тыс. человек. {" "}
                         <Link href="/courses" className='dark:text-[#46e256] text-[crimson] ml-3'>
                             Посмотреть курсы

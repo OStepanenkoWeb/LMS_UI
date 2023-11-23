@@ -11,6 +11,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         Poppins: ['var(--font-Poppins)'],
+        Montserrat: ['var(--font-Montserrat)'],
         Josefin: ["var(--font-Josefin)"]
       },
       backgroundImage: {
