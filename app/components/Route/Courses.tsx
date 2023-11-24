@@ -17,7 +17,7 @@ const Courses = () => {
                 <h1 className="text-center font-Montserrat text-[25px] leading-[35px] sm:text-3xl lg:text-4xl dark:text-white 800px:!leading-[60px] text-[#000] font-[700] tracking-tight">
                     Развивайте свою карьеру
                     <br />
-                    Возможности которые дарят вам наши курсы
+                    <span className="text-gradient">Возможности</span> которые дарят вам наши курсы
                 </h1>
                 <br />
                 <br />

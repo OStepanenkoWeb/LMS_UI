@@ -1,10 +1,9 @@
-import { styles } from '@/app/styles/style';
-import React, { FC, useState } from 'react';
-import {AiOutlineDelete, AiOutlineLink, AiOutlinePlusCircle} from 'react-icons/ai';
-import { BiSolidPencil } from 'react-icons/bi';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-import toast from "react-hot-toast";
-import {BsArrowLeftShort, BsArrowRightShort} from "react-icons/bs";
+import {styles} from "@/app/styles/style";
+import React, {FC, useState} from "react";
+import {toast} from "react-hot-toast";
+import {AiOutlineDelete, AiOutlinePlusCircle} from "react-icons/ai";
+import {BsLink45Deg, BsPencil} from "react-icons/bs";
+import {MdOutlineKeyboardArrowDown} from "react-icons/md";
 
 type Props = {
     active: number;
@@ -15,11 +14,11 @@ type Props = {
 };
 
 const CourseContent: FC<Props> = ({
-                                      active,
-                                      setActive,
                                       courseContentData,
                                       setCourseContentData,
-                                      handleSubmit: handleCourseSubmit,
+                                      active,
+                                      setActive,
+                                      handleSubmit: handlleCourseSubmit,
                                   }) => {
     const [isCollapsed, setIsCollapsed] = useState(
         Array(courseContentData.length).fill(false)
@@ -27,42 +26,28 @@ const CourseContent: FC<Props> = ({
 
     const [activeSection, setActiveSection] = useState(1);
 
-    const newContent = {
-        videoUrl: "",
-        title: "",
-        description: "",
-        videoSection: `Безымянный урок ${activeSection}`,
-        links: [{ title: "", url: "" }],
-    }
-
-    const prevContentDataIndex = courseContentData.length - 1
-
-    const ifEmptyField =  courseContentData[prevContentDataIndex] && (
-        courseContentData[prevContentDataIndex].title === "" ||
-        courseContentData[prevContentDataIndex].description === "" ||
-        courseContentData[prevContentDataIndex].videoUrl === "" ||
-        courseContentData[prevContentDataIndex]?.links[0]?.title === "" ||
-        courseContentData[prevContentDataIndex]?.links[0]?.url === "")
-
-
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+    };
 
     const handleCollapseToggle = (index: number) => {
-        const updatedIsCollapsed = [...isCollapsed];
-        updatedIsCollapsed[index] = !updatedIsCollapsed[index];
-        setIsCollapsed(updatedIsCollapsed);
+        const updatedCollasped = [...isCollapsed];
+
+        updatedCollasped[index] = !updatedCollasped[index];
+        setIsCollapsed(updatedCollasped);
     };
 
     const handleRemoveLink = (index: number, linkIndex: number) => {
-        if (linkIndex > 0) {
-            const updatedData = [...courseContentData];
-            updatedData[index].links.splice(linkIndex, 1);
-            setCourseContentData(updatedData);
-        }
+        const updatedData = [...courseContentData];
+
+        updatedData[index].links.splice(linkIndex, 1);
+        setCourseContentData(updatedData);
     };
 
     const handleAddLink = (index: number) => {
         const updatedData = [...courseContentData];
-        updatedData[index].links.push({ title: "", url: "" });
+
+        updatedData[index].links.push({title: "", url: ""});
         setCourseContentData(updatedData);
     };
 
@@ -72,320 +57,322 @@ const CourseContent: FC<Props> = ({
             item.description === "" ||
             item.videoUrl === "" ||
             item.links[0].title === "" ||
-            item.links[0].url === ""
+            item.links[0].url === "" ||
+            item.videoLength === ""
         ) {
-            toast.error("Пожалуйста, заполните полностью предыдущий урок!");
+            toast.error("Пожалуйста, заполните все поля предыдущей секции!");
         } else {
             let newVideoSection = "";
+
             if (courseContentData.length > 0) {
                 const lastVideoSection =
                     courseContentData[courseContentData.length - 1].videoSection;
-                // use the last videoSection if available, else user user input
+
+                // use the last videoSection if available, else use user input
                 if (lastVideoSection) {
                     newVideoSection = lastVideoSection;
                 }
             }
+            const newContent = {
+                videoUrl: "",
+                title: "",
+                description: "",
+                videoSection: newVideoSection,
+                videoLength: "",
+                links: [{title: "", url: ""}],
+            };
 
             setCourseContentData([...courseContentData, newContent]);
         }
-    }
+    };
 
     const addNewSection = () => {
-        if (ifEmptyField) {
-            toast.error("Пожалуйста, заполните все поля предыдущего урока!");
+        if (
+            courseContentData[courseContentData.length - 1].title === "" ||
+            courseContentData[courseContentData.length - 1].description === "" ||
+            courseContentData[courseContentData.length - 1].videoUrl === "" ||
+            courseContentData[courseContentData.length - 1].links[0].title === "" ||
+            courseContentData[courseContentData.length - 1].links[0].url === ""
+        ) {
+            toast.error("Пожалуйста заполните все поля!");
         } else {
             setActiveSection(activeSection + 1);
-
+            const newContent = {
+                videoUrl: "",
+                title: "",
+                description: "",
+                videoLength: "",
+                videoSection: `Безымянная секция ${activeSection}`,
+                links: [{title: "", url: ""}],
+            };
             setCourseContentData([...courseContentData, newContent]);
         }
-    }
+    };
 
-    const handelOptions = ()=>{
-        if(ifEmptyField){
-            toast.error("Пожалуйста, заполните все поля в предыдущих разделах!");
-        }else{
-            setActive(active + 1)
+    const prevButton = () => {
+        setActive(active - 1);
+    };
 
-            handleCourseSubmit()
+    const handleOptions = () => {
+        if (
+            courseContentData[courseContentData.length - 1].title === "" ||
+            courseContentData[courseContentData.length - 1].description === "" ||
+            courseContentData[courseContentData.length - 1].videoUrl === "" ||
+            courseContentData[courseContentData.length - 1].links[0].title === "" ||
+            courseContentData[courseContentData.length - 1].links[0].url === ""
+        ) {
+            toast.error("section can't be empty!");
+        } else {
+            setActive(active + 1);
+            handlleCourseSubmit();
         }
-    }
+    };
 
     return (
-        <div className='w-[80%] m-auto mt-24 p-3'>
-            <form>
+        <div className="w-[80%] m-auto mt-24 p-3">
+            <form onSubmit={handleSubmit}>
                 {courseContentData?.map((item: any, index: number) => {
                     const showSectionInput =
                         index === 0 ||
-                        item.videoSection !==
-                        courseContentData[index - 1].videoSection;
+                        item.videoSection !== courseContentData[index - 1].videoSection;
+
                     return (
                         <>
                             <div
                                 className={`w-full bg-[#cdc8c817] p-4 ${
-                                    showSectionInput ? 'mt-10' : 'mb-0'
+                                    showSectionInput ? "mt-10" : "mb-0"
                                 }`}
+                                key={index}
                             >
                                 {showSectionInput && (
                                     <>
-                                        <div className='flex w-full items-center'>
+                                        <div className="flex w-full items-center">
                                             <input
-                                                type='text'
+                                                type="text"
                                                 className={`text-[20px] ${
-                                                    item.videoSection ===
-                                                    'Untitled Section'
-                                                        ? 'w-[170px]'
-                                                        : ' w-max'
-                                                } cursor-pointer dark:text-white text-black bg-transparent outline-none`}
+                                                    item.videoSection === "Безымянная скция"
+                                                        ? "w-[170px]"
+                                                        : "w-min"
+                                                } font-Montserrat cursor-pointer dark:text-white text-black bg-transparent outline-none border-b-2 border-slate-400`}
                                                 value={item.videoSection}
                                                 onChange={(e) => {
-                                                    const updatedData = [
-                                                        ...courseContentData,
-                                                    ];
-                                                    updatedData[
-                                                        index
-                                                        ].videoSection =
-                                                        e.target.value;
-                                                    setCourseContentData(
-                                                        updatedData
-                                                    );
+                                                    // console.log("title changed called", e.target.value);
+                                                    const updatedData = [...courseContentData];
+                                                    updatedData[index].videoSection = e.target.value;
+                                                    setCourseContentData(updatedData);
                                                 }}
                                             />
-                                            <BiSolidPencil className='cursor-pointer dark:text-white text-black' />
+                                            <BsPencil className="cursor-pointer dark:text-white text-black"/>
                                         </div>
+                                        <br/>
                                     </>
                                 )}
-                                <div className='flex w-full items-center justify-between my-0'>
+
+                                <div className="flex w-full items-center justify-between my-0">
                                     {isCollapsed[index] ? (
                                         <>
                                             {item.title ? (
-                                                <p className='dark:text-white text-black'>
+                                                <p className="font-Montserrat dark:text-white text-black">
                                                     {index + 1}. {item.title}
                                                 </p>
                                             ) : (
-                                                <div></div>
+                                                <p className="font-Montserrat dark:text-red-600 text-black">
+                                                    Безымянное видео
+                                                </p>
                                             )}
                                         </>
                                     ) : (
                                         <div></div>
                                     )}
-                                    {/* arrow button for collapsed video content */}
-                                    <div className='flex items-center'>
+
+                                    {/* // arrow button for collasped video content */}
+                                    <div className="flex items-center">
                                         <AiOutlineDelete
                                             className={`dark:text-white text-[20px] mr-2 text-black ${
-                                                index > 0
-                                                    ? 'cursor-pointer'
-                                                    : 'cursor-no-drop'
+                                                index > 0 ? "cursor-pointer" : "cursor-no-drop"
                                             }`}
                                             onClick={() => {
                                                 if (index > 0) {
-                                                    const updatedData = [
-                                                        ...courseContentData,
-                                                    ];
-                                                    updatedData.splice(
-                                                        index,
-                                                        1
-                                                    );
-                                                    setCourseContentData(
-                                                        updatedData
-                                                    );
+                                                    const updatedData = [...courseContentData];
+                                                    updatedData.splice(index, 1);
+                                                    setCourseContentData(updatedData);
                                                 }
                                             }}
                                         />
                                         <MdOutlineKeyboardArrowDown
-                                            fontSize='large'
-                                            className='dark:text-white text-black '
+                                            fontSize="large"
+                                            className="dark:text-white text-black"
                                             style={{
                                                 transform: isCollapsed[index]
-                                                    ? 'rotate(180deg)'
-                                                    : 'rotate(0deg)',
+                                                    ? "rotate(180deg)"
+                                                    : "rotate(0deg)",
                                             }}
-                                            onClick={() => {
-                                                handleCollapseToggle(index);
-                                            }}
+                                            onClick={() => handleCollapseToggle(index)}
                                         />
                                     </div>
                                 </div>
                                 {!isCollapsed[index] && (
                                     <>
-                                        <div className='my-3'>
-                                            <label
-                                                className={styles.label}
-                                            >
-                                                Заголовок видео
-                                            </label>
+                                        <div className="my-3">
+                                            <label className={styles.label}>Заголовок видео</label>
                                             <input
-                                                type='text'
-                                                placeholder='План проекта...'
+                                                type="text"
+                                                placeholder="План занятия..."
                                                 className={`${styles.input}`}
                                                 value={item.title}
                                                 onChange={(e) => {
-                                                    const updatedData = [
-                                                        ...courseContentData,
-                                                    ];
-                                                    updatedData[index].title =
-                                                        e.target.value;
-                                                    setCourseContentData(
-                                                        updatedData
-                                                    );
+                                                    const updatedData = [...courseContentData];
+                                                    updatedData[index].title = e.target.value;
+                                                    setCourseContentData(updatedData);
                                                 }}
                                             />
                                         </div>
-                                        <div className="my-3">
-                                            <label className={styles.label}>
-                                                Ссылка на видео
-                                            </label>
+                                        <div className="mb-3">
+                                            <label className={styles.label}>Видео Url</label>
                                             <input
                                                 type="text"
-                                                className={`${styles.input} py-2 flex-grow`}
-                                                placeholder="Укажите ссылку на ваше видео"
+                                                placeholder="Добавьте URL"
+                                                className={`${styles.input}`}
                                                 value={item.videoUrl}
                                                 onChange={(e) => {
                                                     const updatedData = [...courseContentData];
-                                                    updatedData[index].videoUrl =
-                                                        e.target.value;
+                                                    updatedData[index].videoUrl = e.target.value;
                                                     setCourseContentData(updatedData);
                                                 }}
                                             />
                                         </div>
-                                        <div className="my-3">
+                                        <div className="mb-3">
                                             <label className={styles.label}>
-                                                Продолжительность видео
+                                                Размер видео (в минутах)
                                             </label>
                                             <input
-                                                type="text"
-                                                className={`${styles.input} py-2 flex-grow`}
-                                                placeholder="Укажите продолжительность вашего видео"
-                                                value={String(item.videoLength)}
+                                                type="number"
+                                                placeholder="20"
+                                                className={`${styles.input}`}
+                                                value={item.videoLength}
                                                 onChange={(e) => {
                                                     const updatedData = [...courseContentData];
-                                                    updatedData[index].videoLength =
-                                                        Number(e.target.value);
+                                                    updatedData[index].videoLength = e.target.value;
                                                     setCourseContentData(updatedData);
                                                 }}
                                             />
                                         </div>
-                                        <div className="my-3">
-                                            <label className={styles.label}>
-                                                Описание к видео
-                                            </label>
+
+                                        <div className="mb-3">
+                                            <label className={styles.label}>Описание к видео</label>
                                             <textarea
                                                 rows={8}
                                                 cols={30}
-                                                className={`${styles.input} py-2 !h-min`}
                                                 placeholder="Добавьте описание к вашему видео"
+                                                className={`${styles.input} !h-min py-2`}
                                                 value={item.description}
                                                 onChange={(e) => {
                                                     const updatedData = [...courseContentData];
-                                                    updatedData[index].description =
-                                                        e.target.value;
+                                                    updatedData[index].description = e.target.value;
                                                     setCourseContentData(updatedData);
-                                                }}></textarea>
+                                                }}
+                                            />
+                                            <br/>
                                         </div>
-                                        <br />
                                         {item?.links.map((link: any, linkIndex: number) => (
                                             <div className="mb-3 block" key={linkIndex}>
-                                                <div className="w-full items-center flex justify-between">
+                                                <div className="w-full flex items-center justify-between">
                                                     <label className={styles.label}>
-                                                        Вспомогательные материалы {linkIndex + 1}
+                                                        Ссылка {linkIndex + 1}
                                                     </label>
                                                     <AiOutlineDelete
-                                                        className={`dark:text-white text-[20px] mr-2 text-black ${
-                                                            index > 0
-                                                                ? 'cursor-pointer'
-                                                                : 'cursor-no-drop'
-                                                        }`}
-                                                        onClick={() => linkIndex === 0
-                                                            ? null
-                                                            : handleRemoveLink(index, linkIndex)}
+                                                        className={`${
+                                                            linkIndex === 0
+                                                                ? "cursor-no-drop"
+                                                                : "cursor-pointer"
+                                                        } text-black dark:text-white text-[20px]`}
+                                                        onClick={() =>
+                                                            linkIndex === 0
+                                                                ? null
+                                                                : handleRemoveLink(index, linkIndex)
+                                                        }
                                                     />
                                                 </div>
-                                                <div className="my-3">
-                                                    <input
-                                                        type="text"
-                                                        className={`${styles.input} my-2 flex-grow`}
-                                                        placeholder="Укажите описание для ссылки на материал"
-                                                        value={link.title}
-                                                        onChange={(e) => {
-                                                            const updatedData = [...courseContentData];
-                                                            updatedData[index].links[
-                                                                linkIndex
-                                                                ].title = e.target.value;
-                                                            setCourseContentData(updatedData);
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div className="my-3">
-                                                    <input
-                                                        type="text"
-                                                        className={`${styles.input} my-2 flex-grow`}
-                                                        placeholder="Укажите ссылку на материал"
-                                                        value={link.url}
-                                                        onChange={(e) => {
-                                                            const updatedData = [...courseContentData];
-                                                            updatedData[index].links[
-                                                                linkIndex
-                                                                ].url = e.target.value;
-                                                            setCourseContentData(updatedData);
-                                                        }}
-                                                    />
-                                                </div>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Дополнительные материалы... (Link title)"
+                                                    className={`${styles.input}`}
+                                                    value={link.title}
+                                                    onChange={(e) => {
+                                                        const updatedData = [...courseContentData];
+                                                        updatedData[index].links[linkIndex].title =
+                                                            e.target.value;
+                                                        setCourseContentData(updatedData);
+                                                    }}
+                                                />
+                                                <input
+                                                    type="url"
+                                                    placeholder="Ссылка на доп материалы..."
+                                                    className={`${styles.input} mt-6`}
+                                                    value={link.url}
+                                                    onChange={(e) => {
+                                                        const updatedData = [...courseContentData];
+                                                        updatedData[index].links[linkIndex].url =
+                                                            e.target.value;
+                                                        setCourseContentData(updatedData);
+                                                    }}
+                                                />
                                             </div>
                                         ))}
-                                        <button
-                                            className="text-black dark:text-white flex gap-2 items-center mt-3"
-                                            onClick={() => handleAddLink(index)}
-                                        >
-                                            <AiOutlineLink className='dark:text-white text-[20px] mr-2 text-black cursor-pointer'/>
-                                            <span>Добавить ссылку</span>
-                                        </button>
+                                        <br/>
+                                        {/* add link button */}
+                                        <div className="inline-block mb-4">
+                                            <p
+                                                className="flex items-center text-[18px] dark:text-white text-black cursor-pointer"
+                                                onClick={() => handleAddLink(index)}
+                                            >
+                                                <BsLink45Deg className="mr-2"/> Добавить ссылку
+                                            </p>
+                                        </div>
                                     </>
                                 )}
+                                <br/>
+                                {/* add new content */}
                                 {index === courseContentData.length - 1 && (
-                                    <button
-                                        className="dark:text-white text-black flex gap-2 items-center mt-4 duration-300 cursor-pointer"
-                                        onClick={() => newContentHandler(item)}>
-                                        <AiOutlinePlusCircle
-                                            className="dark:text-white text-black duration-300"
-                                        />
-
-                                        <span>
-                                            Добавить новый контент
-                                        </span>
-                                    </button>
+                                    <div>
+                                        <p
+                                            className="flex items-center text-[18px] dark:text-white text-black cursor-pointer"
+                                            onClick={() => newContentHandler(item)}
+                                        >
+                                            <AiOutlinePlusCircle className="mr-2"/> Добавить новый контент
+                                        </p>
+                                    </div>
                                 )}
                             </div>
                         </>
                     );
                 })}
                 <br/>
-                <button
-                    className="flex items-center justify-center text-[20px] cursor-pointer dark:text-white text-black"
-                    onClick={addNewSection}
-                >
-                    <AiOutlinePlusCircle className="mr-2" />
-                    <span>Добавить новый урок</span>
-                </button>
-            </form>
-            <div className="flex justify-between">
                 <div
-                    className='w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center dark:text-white text-black rounded mt-8 cursor-pointer'
-                    onClick={() =>  setActive(active - 1)}
+                    className="flex items-center text-[20px] dark:text-white text-black cursor-pointer"
+                    onClick={() => addNewSection()}
                 >
-                    <span>
-                        <BsArrowLeftShort size={30}/>
-                    </span>
+                    <AiOutlinePlusCircle className="mr-2"/> Добавить секцию
+                </div>
+            </form>
+            <br/>
+            <div className="w-full flex items-center justify-between">
+                <div
+                    className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+                    onClick={() => prevButton()}
+                >
                     Назад
                 </div>
                 <div
-                    className='w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center dark:text-white text-black rounded mt-8 cursor-pointer'
-                    onClick={handelOptions}
+                    className="w-full 800px:w-[180px] flex items-center justify-center h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
+                    onClick={() => handleOptions()}
                 >
                     Далее
-                    <span>
-                        <BsArrowRightShort size={30}/>
-                    </span>
                 </div>
             </div>
+            <br/>
+            <br/>
+            <br/>
         </div>
     );
 };
