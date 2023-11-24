@@ -66,7 +66,7 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
             }
         }
 
-    }, [data, user, error])
+    }, [data, user, error, isSuccess, socialAuth])
 
     if (typeof window !== 'undefined') {
         window.addEventListener('scroll', () => {
@@ -96,14 +96,12 @@ const Header: FC<IHeaderProps> = ({activeItem, setOpen, route, setRoute, open}) 
                 <div>
                     <div className='w-[95%] 800px:w-[92%] m-auto py-2 h-full'>
                         <div className='w-full h-[80px] flex items-center justify-between p-3'>
-                            <div>
                                 <Link
                                     href={"/"}
-                                    className={`text=[25px] font-Poppins font-[500] text-black dark:text-white`}
+                                    className={`text-3xl font-Montserrat font-[500] text-black dark:text-white`}
                                 >
-                                    Курсовик
+                                    LMS
                                 </Link>
-                            </div>
                             <div className="flex items-center">
                                 <NavItems
                                     activeItem={activeItem}

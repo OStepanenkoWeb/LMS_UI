@@ -1,23 +1,23 @@
-import {FC, useEffect, useState} from "react";
-import toast from "react-hot-toast";
-import {redirect} from "next/navigation";
-import CourseInformation from "@/app/components/Admin/Course/CourseInformation";
-import CourseData from "@/app/components/Admin/Course/CourseData";
-import CourseContent from "@/app/components/Admin/Course/CourseContent";
-import CoursePreview from "@/app/components/Admin/Course/CoursePreview";
-import CourseOptions from "@/app/components/Admin/Course/CourseOptions";
-import {
-    useEditCourseMutation,
-    useGetFullCoursesQuery
-} from "@/redux/features/courses/coursesApi";
+import React, { FC, useEffect, useState } from "react";
+import CourseOptions from "./CourseOptions";
+import CourseInformation from "./CourseInformation";
+import CourseData from "./CourseData";
+import CourseContent from "./CourseContent";
+import CoursePreview from "./CoursePreview";
+import { toast } from "react-hot-toast";
+import { redirect } from "next/navigation";
+import {useEditCourseMutation, useGetFullCoursesQuery} from "@/redux/features/courses/coursesApi";
 
-interface IEditCourse {
+type Props = {
     id: string;
-}
+};
 
-const EditCourse: FC<IEditCourse> = ({ id }) => {
+const EditCourse: FC<Props> = ({ id }) => {
     const [editCourse, { isSuccess, error }] = useEditCourseMutation();
-    const { data, refetch } = useGetFullCoursesQuery({}, { refetchOnMountOrArgChange: true });
+    const { data } = useGetFullCoursesQuery(
+        {},
+        { refetchOnMountOrArgChange: true }
+    );
 
     const editCourseData = data && data.courses.find((i: any) => i._id === id);
 
@@ -55,7 +55,7 @@ const EditCourse: FC<IEditCourse> = ({ id }) => {
             videoUrl: "",
             title: "",
             description: "",
-            videoSection: "Пустая секция",
+            videoSection: "Безымянная секция",
             videoLength: "",
             links: [
                 {
@@ -99,7 +99,7 @@ const EditCourse: FC<IEditCourse> = ({ id }) => {
                 description: obj.description,
                 videoSection: obj.videoSection,
                 videoLength: obj.videoLength,
-                links: obj?.links?.map((link: any) => ({
+                links: obj.links.map((link: any) => ({
                     title: link.title,
                     url: link.url,
                 })),
@@ -153,7 +153,7 @@ const EditCourse: FC<IEditCourse> = ({ id }) => {
         setCourseData(data);
     };
 
-    const handleCourseCreate = async (e: any) => {
+    const handleCourseCreate = async () => {
         const data = courseData;
         await editCourse({ id: editCourseData?._id, data });
     };
@@ -194,7 +194,7 @@ const EditCourse: FC<IEditCourse> = ({ id }) => {
                         active={active}
                         setActive={setActive}
                         courseData={courseData}
-                        handelCourseCreation={handleCourseCreate}
+                        handleCourseCreate={handleCourseCreate}
                         isEdit={true}
                     />
                 )}
