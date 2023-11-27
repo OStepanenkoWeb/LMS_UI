@@ -12,13 +12,13 @@ import { VscVerifiedFilled } from "react-icons/vsc";
 import CourseContentList from "@/app/components/Course/CourseContentList";
 import CheckOutForm from "@/app/components/Payment/CheckOutForm";
 
-type Props = {
-    data: any;
-    stripePromise: any;
-    clientSecret: string;
-    setRoute: any;
-    setOpen: any;
-};
+interface ICourseDetails {
+    data: any
+    stripePromise: any
+    clientSecret: string
+    setRoute: any
+    setOpen: any
+}
 
 const CourseDetails = ({
                            data,
@@ -26,7 +26,7 @@ const CourseDetails = ({
                            clientSecret,
                            setRoute,
                            setOpen: openAuthModal,
-                       }: Props) => {
+                       }: ICourseDetails) => {
     const { data: userData,refetch } = useLoadUserQuery(undefined, {});
     const [user, setUser] = useState<any>();
     const [open, setOpen] = useState(false);
@@ -38,8 +38,7 @@ const CourseDetails = ({
     const dicountPercentenge = ((data?.estimatedPrice - data.price) / data?.estimatedPrice) * 100;
 
     const discountPercentengePrice = dicountPercentenge.toFixed(0);
-    const isPurchased =
-        user && user?.courses?.find((item: any) => item._id === data._id);
+    const isPurchased = user && user?.courses?.find((item: any) => item._id === data._id);
 
     const handleOrder = () => {
         if (user) {
@@ -272,9 +271,13 @@ const CourseDetails = ({
                                 />
                             </div>
                             <div className="w-full">
-                                    <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                        <CheckOutForm setOpen={setOpen} data={data} user={user} refetch={refetch} />
-                                    </Elements>
+                                {
+                                    stripePromise && clientSecret && (
+                                        <Elements stripe={stripePromise} options={{ clientSecret }}>
+                                            <CheckOutForm setOpen={setOpen} data={data} user={user} refetch={refetch} />
+                                        </Elements>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
