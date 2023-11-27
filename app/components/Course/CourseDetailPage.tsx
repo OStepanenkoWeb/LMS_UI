@@ -2,8 +2,6 @@ import { useGetCourseDetailsQuery } from "@/redux/features/courses/coursesApi";
 import React, { useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
 import Heading from "@/app/utils/Heading";
-import Header from "../Header";
-import Footer from "../Footer";
 import CourseDetails from "./CourseDetails";
 import {
     useCreatePaymentIntentMutation,
@@ -11,6 +9,8 @@ import {
 } from "@/redux/features/orders/ordersApi";
 import { loadStripe } from "@stripe/stripe-js";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 type Props = {
     id: string;
@@ -51,9 +51,9 @@ const CourseDetailsPage = ({ id }: Props) => {
             ) : (
                 <div>
                     <Heading
-                        title={data.course.name + " - CoursePool"}
+                        title={data?.course?.name + " - Группа LMS"}
                         description={
-                            "CoursePool is a programming community which is developed by Jeet Savsani and Dharmesh Poriya for helping programmers"
+                            "Группа LMS это сообщество программистов созданное для помощи при прохождении курсов"
                         }
                         keywords={data?.course?.tags}
                     />
@@ -73,13 +73,6 @@ const CourseDetailsPage = ({ id }: Props) => {
                             setOpen={setOpen}
                         />
                     )}
-                    <CourseDetails
-                        data={data.course}
-                        stripePromise={stripePromise}
-                        clientSecret={clientSecret}
-                        setRoute={setRoute}
-                        setOpen={setOpen}
-                    />
                     <Footer />
                 </div>
             )}

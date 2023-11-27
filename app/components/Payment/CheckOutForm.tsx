@@ -42,7 +42,7 @@ const CheckOutForm = ({ data, user, refetch }: Props) => {
             setIsLoading(false);
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
             setIsLoading(false);
-            createOrder({ courseId: data._id, payment_info: paymentIntent });
+            createOrder({ courseId: data._id, paymentInfo: paymentIntent });
         }
     };
 
