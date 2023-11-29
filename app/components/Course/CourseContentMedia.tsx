@@ -551,8 +551,8 @@ const CommentItem = ({
                     <div>
                         <img
                             src={
-                                GetStaticUrl(item.avatar
-                                    ? item.avatar
+                                GetStaticUrl(item.user.avatar
+                                    ? item.user.avatar
                                     : avatar)
                             }
                             width={50}
@@ -579,9 +579,9 @@ const CommentItem = ({
                     >
                         {!replyActive
                             ? item.questionReplies.length !== 0
-                                ? "All Replies"
-                                : "Add Reply"
-                            : "Hide Replies"}
+                                ? "Все ответы"
+                                : "Добавить ответ"
+                            : "Скрыть ответы"}
                     </span>
                     <BiMessage
                         size={20}
