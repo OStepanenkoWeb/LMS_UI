@@ -11,6 +11,7 @@ import Image from "next/image";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import CourseContentList from "@/app/components/Course/CourseContentList";
 import CheckOutForm from "@/app/components/Payment/CheckOutForm";
+import avatar from '@/public/avatars/avatar.png'
 
 interface ICourseDetails {
     data: any
@@ -148,8 +149,8 @@ const CourseDetails = ({
                                                 <Image
                                                     src={
                                                         item.user.avatar
-                                                            ? item.user.avatar.url
-                                                            : "https://res.cloudinary.com/dig1xnhyl/image/upload/v1696181416/avatars/avatar_sku8tm.png"
+                                                            ? item.user.avatar
+                                                            : avatar
                                                     }
                                                     width={50}
                                                     height={50}
@@ -184,8 +185,8 @@ const CourseDetails = ({
                                                     <Image
                                                         src={
                                                             i.user.avatar
-                                                                ? i.user.avatar.url
-                                                                : "https://res.cloudinary.com/dig1xnhyl/image/upload/v1696181416/avatars/avatar_sku8tm.png"
+                                                                ? i.user.avatar
+                                                                : avatar
                                                         }
                                                         width={50}
                                                         height={50}
