@@ -11,7 +11,7 @@ const navItemsData = [{
     url: '/'
 }, {
     name: 'Курсы',
-    url: '/course'
+    url: '/courses'
 }, {
     name: 'О нас',
     url: '/about'

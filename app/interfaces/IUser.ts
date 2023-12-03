@@ -5,4 +5,5 @@ export interface IUser {
     email?: string
     avatar?: string | StaticImageData
     role: string
+    courses: Array<{ courseId: string }>
 }
