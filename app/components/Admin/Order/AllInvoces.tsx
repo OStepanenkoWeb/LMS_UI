@@ -25,7 +25,7 @@ const CustomPagination = () => {
 }
 
 const CustomNoRowsOverlay = () => {
-    const {theme, setTheme} = useTheme();
+    const {theme} = useTheme();
 
     return (
         <Stack
@@ -40,7 +40,7 @@ const CustomNoRowsOverlay = () => {
 }
 
 const AllInvoices = ({isDashboard}: Props) => {
-    const {theme, setTheme} = useTheme();
+    const {theme} = useTheme();
     const {isLoading, data} = useGetAllOrdersQuery({});
     const {data: usersData} = useGetAllUsersQuery({});
     const {data: coursesData} = useGetUsersAllCoursesQuery({});
@@ -172,7 +172,7 @@ const AllInvoices = ({isDashboard}: Props) => {
                         }}
                     >
                         <DataGrid
-                            checkboxSelection={isDashboard ? false : true}
+                            checkboxSelection={!isDashboard}
                             rows={rows}
                             columns={columns}
                             slots={{
