@@ -7,9 +7,10 @@ interface ICustomModal {
     activeItem: any
     component?: any
     setRoute?: (route: string) => void
+    refetch?:any
 }
 
-const CustomModal:FC<ICustomModal> = ({open, setOpen, setRoute, component: Component, activeItem}) => {
+const CustomModal:FC<ICustomModal> = ({open, setOpen, setRoute, component: Component, refetch}) => {
     return (
        <Modal
            open={open}
@@ -21,6 +22,7 @@ const CustomModal:FC<ICustomModal> = ({open, setOpen, setRoute, component: Compo
                <Component
                    setOpen={setOpen}
                    setRoute={setRoute}
+                   refetch={refetch}
                />
            </Box>
        </Modal>

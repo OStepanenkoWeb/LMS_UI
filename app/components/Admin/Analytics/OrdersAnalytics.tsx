@@ -38,62 +38,12 @@ const CustomTooltip = ({ active, payload }:ICustomTooltip ) => {
 export default function OrdersAnalytics({ isDashboard }: IOrdersAnalytics) {
     const { data, isLoading } = useGetOrdersAnalyticsQuery({});
 
-    //const analyticsData: any = [];
+    const analyticsData: any = [];
 
-    const analyticsData = [
-  {
-    name: "Январь",
-    Count: 4000,
-  },
-  {
-    name: "Февраль",
-    Count: 3000,
-  },
-  {
-    name: "Март",
-    Count: 5000,
-  },
-  {
-    name: "Апрель",
-    Count: 1000,
-  },
-  {
-    name: "Май",
-    Count: 4000,
-  },
-  {
-    name: "Июнь",
-    Count: 800,
-  },
-  {
-    name: "Июль",
-    Count: 200,
-  },
-        {
-            name: "Август",
-            Count: 1200,
-        },
-        {
-            name: "Сентябрь",
-            Count: 1600,
-        },
-        {
-            name: "Октябрь",
-            Count: 1550,
-        },
-        {
-            name: "Ноябрь",
-            Count: 2000,
-        },
-        {
-            name: "Декабрь",
-            Count: 3000,
-        },
-];
-    // data &&
-    // data.orders.last12Months.forEach((item: any) => {
-    //     analyticsData.push({ name: item.name, Count: item.count });
-    // });
+    data &&
+    data.orders.last12Months.forEach((item: any) => {
+        analyticsData.push({ name: item.name, Count: item.count });
+    });
 
     return (
         <>

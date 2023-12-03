@@ -24,7 +24,7 @@ import {GetStaticUrl} from "@/app/utils/GetStaticPath";
 import avatar from '@/public/avatars/avatar.png'
 
 
-const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_SERVER_URI || "";
+const ENDPOINT = process.env.NEXT_PUBLIC_DOMEN_URL || "";
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type Props = {

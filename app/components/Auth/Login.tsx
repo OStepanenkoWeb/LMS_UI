@@ -1,6 +1,6 @@
 'use client'
 
-import React, {ChangeEvent, ChangeEventHandler, FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import * as Yup from 'yup'
 import {useFormik} from "formik";
 import {styles} from "@/app/styles/style";
@@ -12,8 +12,9 @@ import toast from "react-hot-toast";
 import {signIn} from "next-auth/react";
 
 interface ILogin {
-    setRoute: (route: string) => void,
-    setOpen: (open: boolean) => void,
+    setRoute: (route: string) => void
+    setOpen: (open: boolean) => void
+    refetch?: any
 }
 
 const schema = Yup.object().shape({
@@ -21,9 +22,9 @@ const schema = Yup.object().shape({
     password: Yup.string().required("Пожалуйста укажите свой пароль").min(6)
 })
 
-const Login: FC<ILogin> = ({setRoute, setOpen}) => {
+const Login: FC<ILogin> = ({setRoute, setOpen, refetch}) => {
     const [show, setShow] = useState<boolean>(false)
-    const [login, { isSuccess, data, error }] = useLoginMutation()
+    const [login, { isSuccess, error }] = useLoginMutation()
 
     const formik = useFormik({
         initialValues: {email: '', password: ''},
@@ -37,6 +38,7 @@ const Login: FC<ILogin> = ({setRoute, setOpen}) => {
         if(isSuccess) {
             toast.success('Вы успешно авторизовались')
             setOpen(false)
+            refetch()
         }
 
         if (error) {

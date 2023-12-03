@@ -5,15 +5,16 @@ import Heading from "@/app/utils/Heading";
 import Header from "@/app/components/Header";
 import {useSelector} from "react-redux";
 import Profile from "@/app/components/Profile/Profile";
+import Footer from "@/app/components/Footer";
 
 const Page:FC = () => {
     const [open, setOpen] = useState(false)
-    const [activeItem, setActiveItem] = useState(5)
+    const [activeItem] = useState(5)
     const [route, setRoute] = useState("Login")
     const {user} = useSelector((state: any) => state.auth)
 
     return (
-        <div>
+        <div className='min-h-screen'>
             <Protected>
                 <Heading
                     title={`LMS ${user?.name} кабинет пользователя`}
@@ -30,6 +31,7 @@ const Page:FC = () => {
                 <Profile
                     user={user}
                 />
+                <Footer />
             </Protected>
         </div>
     );

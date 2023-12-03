@@ -8,7 +8,7 @@ import {
     useGetUsersAnalyticsQuery,
 } from "@/redux/features/analytics/analyticsApi";
 import OrdersAnalytics from "@/app/components/Admin/Analytics/OrdersAnalytics";
-import AllInvoices from "@/app/components/Order/AllInvoces";
+import AllInvoices from "@/app/components/Admin/Order/AllInvoces";
 
 type Props = {
     open: boolean;

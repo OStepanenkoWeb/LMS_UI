@@ -7,11 +7,15 @@ import './globals.css'
 import {Toaster} from "react-hot-toast";
 import {Providers} from "@/app/Provider";
 import {SessionProvider} from "next-auth/react";
-import React from "react";
+import React, {useEffect} from "react";
 import {useLoadUserQuery} from "@/redux/features/api/apiSlice";
 import Loader from "@/app/components/Loader/Loader";
 import {useSelector} from "react-redux";
 import {Montserrat} from "next/font/google";
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_DOMEN_URL || "";
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] });
+
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -36,6 +40,9 @@ const Custom: React.FC<{children: React.ReactNode}> = ({children}) => {
     const {isLoading} = useLoadUserQuery(undefined, {
         skip: !user.auth
     })
+    useEffect(() => {
+        socketId.on("connection", () => { });
+    }, []);
 
     return (
         <div>
